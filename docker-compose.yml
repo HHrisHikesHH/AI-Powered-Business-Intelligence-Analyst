@@ -1,0 +1,78 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: ai_bi_redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - ai_bi_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai_bi_backend
+    ports:
+      - "${BACKEND_PORT:-8001}:8001"
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_USER=${POSTGRES_USER:-ai_bi_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ai_bi_password}
+      - POSTGRES_DB=${POSTGRES_DB:-ai_bi_db}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+    volumes:
+      - ./backend:/app
+      - ./backend/database:/app/database
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - ai_bi_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai_bi_celery_worker
+    environment:
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_USER=${POSTGRES_USER:-ai_bi_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ai_bi_password}
+      - POSTGRES_DB=${POSTGRES_DB:-ai_bi_db}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+    volumes:
+      - ./backend:/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
+    networks:
+      - ai_bi_network
+    command: celery -A app.celery_app worker --loglevel=info
+
+volumes:
+  redis_data:
+
+networks:
+  ai_bi_network:
+    driver: bridge
+
