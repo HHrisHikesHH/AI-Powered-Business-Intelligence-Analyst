@@ -1,0 +1,47 @@
+# FastAPI and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Database
+asyncpg==0.29.0
+sqlalchemy[asyncio]==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9
+
+# Redis and caching
+redis==5.0.1
+hiredis==2.2.3
+
+# Celery for async tasks
+celery==5.3.4
+flower==2.0.1
+
+# Vector store and embeddings
+# Note: torch is required by sentence-transformers for local embedding generation.
+# We use CPU-only torch to avoid GPU/CUDA dependencies and reduce disk usage (~500MB vs ~2GB+ for GPU version).
+# To remove torch entirely, switch to API-based embeddings (e.g., OpenAI, Cohere).
+# IMPORTANT: Install CPU-only torch BEFORE installing other packages:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# Then install remaining requirements: pip install -r requirements.txt
+pgvector==0.2.4
+sentence-transformers>=2.7.0
+# CPU-only PyTorch (install separately with --index-url https://download.pytorch.org/whl/cpu)
+# Version constraint ensures compatibility with sentence-transformers
+torch>=2.2.0,<2.3.0
+transformers>=4.30.0
+
+# LLM API client
+groq==0.4.1
+httpx==0.25.2
+
+# Utilities
+python-dotenv==1.0.0
+python-multipart==0.0.6
+loguru==0.7.2
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+
