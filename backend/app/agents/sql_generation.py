@@ -7,6 +7,8 @@ from loguru import logger
 from app.core.llm_client import llm_service, QueryComplexity
 from app.core.pgvector_client import vector_store
 from app.agents.prompts import format_sql_generation_prompt, SQL_GENERATION_FEW_SHOT_EXAMPLES
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
 from typing import Dict, Any, List, Optional
 import json
 
@@ -14,9 +16,10 @@ import json
 class SQLGenerationAgent:
     """Agent responsible for generating SQL queries from natural language."""
     
-    def __init__(self):
+    def __init__(self, db: Optional[AsyncSession] = None):
         self.llm = llm_service
         self.vector_store = vector_store
+        self.db = db
     
     async def generate_sql(
         self,
@@ -46,9 +49,9 @@ class SQLGenerationAgent:
                     natural_language_query
                 )
             
-            # If RAG didn't return enough context, add basic schema info
+            # If RAG didn't return enough context, add dynamic schema info
             if not schema_context or len(schema_context) < 50:
-                schema_context = self._get_basic_schema_info()
+                schema_context = await self._get_dynamic_schema_info()
             
             # Format prompt with context
             prompt = format_sql_generation_prompt(
@@ -97,7 +100,7 @@ Do NOT include:
 
 Just the SQL query, nothing else.""",
                         temperature=0.1,  # Very low temperature for deterministic SQL
-                        max_tokens=800,  # Increased for complex queries
+                        max_tokens=800,
                         complexity=complexity,
                         auto_select_model=True
                     )
@@ -190,18 +193,87 @@ Just the SQL query, nothing else.""",
             logger.warning(f"Error retrieving schema context: {e}")
             return ""
     
-    def _get_basic_schema_info(self) -> str:
-        """Get basic schema information as fallback."""
-        return """Available Tables:
-- customers (id, name, email, created_at, city, country, phone)
-- products (id, name, category, price, stock_quantity, description, created_at)
-- orders (id, customer_id, order_date, total_amount, status, shipping_address)
-- order_items (id, order_id, product_id, quantity, line_total)
-
-Relationships:
-- orders.customer_id -> customers.id
-- order_items.order_id -> orders.id
-- order_items.product_id -> products.id"""
+    async def _get_dynamic_schema_info(self) -> str:
+        """
+        Get schema information dynamically from the database.
+        Falls back to empty string if database introspection fails.
+        
+        Returns:
+            Formatted schema information string
+        """
+        if not self.db:
+            logger.warning("No database session available for schema introspection")
+            return ""
+        
+        try:
+            # Get all tables
+            tables_result = await self.db.execute(text("""
+                SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = 'public'
+                AND table_type = 'BASE TABLE'
+                ORDER BY table_name
+            """))
+            tables = [row[0] for row in tables_result.fetchall()]
+            
+            if not tables:
+                logger.warning("No tables found in database")
+                return ""
+            
+            schema_parts = ["Available Tables:"]
+            
+            # Get columns for each table
+            for table in tables:
+                columns_result = await self.db.execute(text("""
+                    SELECT column_name, data_type
+                    FROM information_schema.columns
+                    WHERE table_schema = 'public'
+                    AND table_name = :table_name
+                    ORDER BY ordinal_position
+                """), {"table_name": table})
+                
+                columns = [(row[0], row[1]) for row in columns_result.fetchall()]
+                column_names = [col[0] for col in columns]
+                
+                if column_names:
+                    schema_parts.append(f"- {table} ({', '.join(column_names)})")
+            
+            # Get relationships (foreign keys)
+            relationships_result = await self.db.execute(text("""
+                SELECT
+                    tc.table_name,
+                    kcu.column_name,
+                    ccu.table_name AS foreign_table_name,
+                    ccu.column_name AS foreign_column_name
+                FROM information_schema.table_constraints AS tc
+                JOIN information_schema.key_column_usage AS kcu
+                    ON tc.constraint_name = kcu.constraint_name
+                JOIN information_schema.constraint_column_usage AS ccu
+                    ON ccu.constraint_name = tc.constraint_name
+                WHERE tc.constraint_type = 'FOREIGN KEY'
+                AND tc.table_schema = 'public'
+                ORDER BY tc.table_name, kcu.column_name
+            """))
+            
+            relationships = [
+                (row[0], row[1], row[2], row[3])
+                for row in relationships_result.fetchall()
+            ]
+            
+            if relationships:
+                schema_parts.append("\nRelationships:")
+                for rel in relationships:
+                    schema_parts.append(
+                        f"- {rel[0]}.{rel[1]} -> {rel[2]}.{rel[3]}"
+                    )
+            
+            schema_info = "\n".join(schema_parts)
+            logger.debug(f"Retrieved dynamic schema info: {len(tables)} tables, {len(relationships)} relationships")
+            return schema_info
+            
+        except Exception as e:
+            logger.warning(f"Error retrieving dynamic schema info: {e}")
+            return ""
     
     def _determine_complexity(self, query_understanding: Dict[str, Any]) -> QueryComplexity:
         """
@@ -310,16 +382,11 @@ Relationships:
             order_by = query_understanding.get("order_by")
             
             if not tables:
-                # Try to infer table from query
+                # Try to infer table from query by searching database schema
                 query_lower = natural_language_query.lower()
-                if "customer" in query_lower:
-                    tables = ["customers"]
-                elif "product" in query_lower:
-                    tables = ["products"]
-                elif "order" in query_lower:
-                    tables = ["orders"]
-                elif "order item" in query_lower:
-                    tables = ["order_items"]
+                inferred_table = await self._infer_table_from_query(query_lower)
+                if inferred_table:
+                    tables = [inferred_table]
             
             if not tables:
                 raise ValueError("Cannot determine table from query")
@@ -407,4 +474,52 @@ Relationships:
         except Exception as e:
             logger.error(f"Error in fallback SQL generation: {e}")
             raise ValueError(f"Failed to generate fallback SQL: {e}")
+    
+    async def _infer_table_from_query(self, query_lower: str) -> Optional[str]:
+        """
+        Infer table name from query by searching database schema.
+        
+        Args:
+            query_lower: Lowercase natural language query
+        
+        Returns:
+            Inferred table name or None
+        """
+        if not self.db:
+            return None
+        
+        try:
+            # Get all tables
+            result = await self.db.execute(text("""
+                SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = 'public'
+                AND table_type = 'BASE TABLE'
+                ORDER BY table_name
+            """))
+            
+            all_tables = [row[0].lower() for row in result.fetchall()]
+            
+            # Try to match query terms with table names
+            for table in all_tables:
+                # Check if table name (singular or plural) appears in query
+                table_singular = table.rstrip('s')  # Remove trailing 's'
+                if table in query_lower or table_singular in query_lower:
+                    # Get the actual table name (with correct case)
+                    actual_table = await self.db.execute(text("""
+                        SELECT table_name
+                        FROM information_schema.tables
+                        WHERE table_schema = 'public'
+                        AND LOWER(table_name) = :table_name
+                        LIMIT 1
+                    """), {"table_name": table})
+                    row = actual_table.fetchone()
+                    if row:
+                        return row[0]
+            
+            return None
+            
+        except Exception as e:
+            logger.warning(f"Error inferring table from query: {e}")
+            return None
 

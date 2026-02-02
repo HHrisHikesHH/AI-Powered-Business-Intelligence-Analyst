@@ -29,7 +29,7 @@ class Orchestrator:
     def __init__(self, db: AsyncSession):
         self.db = db
         self.query_understanding_agent = QueryUnderstandingAgent()
-        self.sql_generation_agent = SQLGenerationAgent()
+        self.sql_generation_agent = SQLGenerationAgent(db=db)
         self.sql_validator = SQLValidator(db)
         
         # Build LangGraph workflow
