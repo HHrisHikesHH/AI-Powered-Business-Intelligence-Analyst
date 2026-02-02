@@ -7,9 +7,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 from app.core.config import settings
 from app.api.v1.router import api_router
-from app.core.database import init_db
+from app.core.database import init_db, get_db
 from app.core.redis_client import init_redis
 from app.core.pgvector_client import init_pgvector, close_pg_pool
+from app.services.schema_introspection import ensure_schema_embeddings
 
 app = FastAPI(
     title="AI-Powered Business Intelligence Analyst",
@@ -38,6 +39,12 @@ async def startup_event():
         await init_db()
         await init_redis()
         await init_pgvector()
+        
+        # Initialize schema embeddings for RAG (if not already present)
+        async for db in get_db():
+            await ensure_schema_embeddings(db)
+            break
+        
         logger.info("Backend started successfully - all services initialized")
     except Exception as e:
         logger.error(f"Failed to initialize services: {e}")

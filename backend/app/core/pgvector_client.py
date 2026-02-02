@@ -55,8 +55,17 @@ async def init_pgvector():
                 "SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname = 'vector')"
             )
             if not ext_exists:
-                logger.warning("pgvector extension not found. Please install it in your PostgreSQL database.")
-                logger.info("Run: CREATE EXTENSION IF NOT EXISTS vector;")
+                logger.info("pgvector extension not found, creating it...")
+                try:
+                    # Try to create the extension
+                    await conn.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+                    logger.info("pgvector extension created successfully")
+                except Exception as ext_error:
+                    logger.error(f"Failed to create pgvector extension: {ext_error}")
+                    logger.warning("Please ensure pgvector is installed in your PostgreSQL database.")
+                    logger.info("For Ubuntu/Debian: sudo apt-get install postgresql-XX-pgvector")
+                    logger.info("Or run manually: CREATE EXTENSION IF NOT EXISTS vector;")
+                    raise
             else:
                 logger.info("pgvector extension verified")
             
@@ -89,6 +98,22 @@ class VectorStore:
         """Ensure vector tables exist for this collection."""
         pool = await get_pg_pool()
         async with pool.acquire() as conn:
+            # First ensure pgvector extension exists
+            ext_exists = await conn.fetchval(
+                "SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname = 'vector')"
+            )
+            if not ext_exists:
+                logger.info("Creating pgvector extension...")
+                try:
+                    await conn.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+                    logger.info("pgvector extension created successfully")
+                except Exception as ext_error:
+                    logger.error(f"Failed to create pgvector extension: {ext_error}")
+                    raise RuntimeError(
+                        "pgvector extension is required but could not be created. "
+                        "Please install it manually: CREATE EXTENSION IF NOT EXISTS vector;"
+                    ) from ext_error
+            
             # Create table for this collection if it doesn't exist
             table_name = f"vector_{self.collection_name}"
             await conn.execute(f"""
