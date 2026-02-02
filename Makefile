@@ -13,7 +13,8 @@ help:
 	@echo "  make restart        - Restart all services"
 	@echo ""
 	@echo "Database:"
-	@echo "  make migrate        - Run database migrations (creates schema)"
+	@echo "  make db-setup       - Set up database (creates DB if needed, runs migrations, seeds data)"
+	@echo "  make migrate        - Run database migrations (creates schema, assumes DB exists)"
 	@echo "  make seed           - Seed database with sample data"
 	@echo "  make db-reset       - Reset database (drop and recreate)"
 	@echo ""
@@ -60,7 +61,14 @@ restart: down up
 logs:
 	docker-compose logs -f
 
+# Database setup (creates database if needed, then runs migrations)
+db-setup:
+	@echo "Setting up database (creates database if needed)..."
+	@cd backend && source venv/bin/activate && python scripts/setup_database.py --seed
+	@echo "Database setup complete."
+
 # Database migration (schema creation)
+# Note: This assumes the database already exists. Use 'make db-setup' to create it first.
 migrate:
 	@echo "Running database migrations..."
 	@if [ ! -f .env ]; then \
