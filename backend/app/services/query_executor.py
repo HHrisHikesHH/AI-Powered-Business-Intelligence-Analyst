@@ -7,7 +7,35 @@ from sqlalchemy import text
 from loguru import logger
 from typing import Dict, List, Any
 import asyncio
+from datetime import datetime, date
+from decimal import Decimal
 from app.core.config import settings
+
+
+def _json_serialize_value(value: Any) -> Any:
+    """
+    Convert non-JSON-serializable values to JSON-serializable types.
+    
+    Args:
+        value: Value to convert
+    
+    Returns:
+        JSON-serializable value
+    """
+    if value is None:
+        return None
+    elif isinstance(value, (datetime, date)):
+        return value.isoformat()
+    elif isinstance(value, Decimal):
+        # Convert Decimal to float for JSON serialization
+        # Use float() to preserve numeric type, or str() if precision is critical
+        return float(value)
+    elif isinstance(value, (list, tuple)):
+        return [_json_serialize_value(item) for item in value]
+    elif isinstance(value, dict):
+        return {k: _json_serialize_value(v) for k, v in value.items()}
+    else:
+        return value
 
 
 class QueryExecutor:
@@ -89,9 +117,14 @@ class QueryExecutor:
             
             rows = result.fetchall()
             
-            # Convert to list of dicts
+            # Convert to list of dicts with JSON-serializable values
             columns = result.keys()
-            results = [dict(zip(columns, row)) for row in rows]
+            results = []
+            for row in rows:
+                row_dict = dict(zip(columns, row))
+                # Convert non-JSON-serializable types (datetime, Decimal, etc.)
+                serialized_dict = {k: _json_serialize_value(v) for k, v in row_dict.items()}
+                results.append(serialized_dict)
             
             # For SELECT queries, we don't need to commit, but we should rollback
             # to ensure clean state for next query
