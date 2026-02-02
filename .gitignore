@@ -48,3 +48,6 @@ models/
 *.pt
 *.pth
 
+
+# Evaluation outputs
+backend/evaluation_results.json
