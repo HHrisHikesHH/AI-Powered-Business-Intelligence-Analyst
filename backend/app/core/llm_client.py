@@ -154,7 +154,14 @@ class LLMService:
             response = self.client.chat.completions.create(**request_params)
             
             logger.debug(f"Used model {selected_model} for completion")
-            return response.choices[0].message.content
+            
+            # Extract content safely
+            content = response.choices[0].message.content
+            if not content:
+                logger.warning(f"Empty response from LLM model {selected_model}")
+                raise ValueError("LLM returned empty response")
+            
+            return content
         except Exception as e:
             logger.error(f"Error generating LLM completion: {e}")
             raise

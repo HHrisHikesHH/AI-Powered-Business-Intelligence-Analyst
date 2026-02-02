@@ -1,94 +1,47 @@
 """
 Query executor service.
-Handles SQL generation and execution (simplified for Week 1).
+Handles SQL execution with timeouts and row limits (Week 2).
 """
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from loguru import logger
-from app.core.llm_client import llm_service
 from typing import Dict, List, Any
-import json
+import asyncio
+from app.core.config import settings
 
 
 class QueryExecutor:
-    """Service for executing natural language queries."""
+    """Service for executing SQL queries with safety measures."""
+    
+    # Default timeout in seconds
+    DEFAULT_TIMEOUT = 30
+    
+    # Default row limit
+    DEFAULT_ROW_LIMIT = 10000
     
     def __init__(self, db: AsyncSession):
         self.db = db
-        self.llm = llm_service
     
-    async def execute_query(self, natural_language_query: str) -> Dict[str, Any]:
+    async def _execute_sql(
+        self,
+        sql: str,
+        timeout: int = None,
+        row_limit: int = None
+    ) -> List[Dict]:
         """
-        Execute natural language query.
+        Execute SQL query against database with timeout and row limits.
         
-        For Week 1, this is a simplified version that:
-        1. Generates SQL using LLM
-        2. Executes SQL against database
-        3. Returns results
+        Args:
+            sql: SQL query string
+            timeout: Query timeout in seconds (default: 30)
+            row_limit: Maximum rows to return (default: 10000)
         
-        Full multi-agent pipeline will be implemented in later phases.
+        Returns:
+            List of result dictionaries
         """
-        try:
-            # Step 1: Generate SQL from natural language
-            sql = await self._generate_sql(natural_language_query)
-            
-            # Step 2: Execute SQL
-            results = await self._execute_sql(sql)
-            
-            return {
-                "sql": sql,
-                "results": results
-            }
-        except Exception as e:
-            logger.error(f"Error executing query: {e}")
-            raise
-    
-    async def _generate_sql(self, query: str) -> str:
-        """Generate SQL from natural language query using LLM."""
-        system_prompt = """You are a SQL expert. Generate PostgreSQL SQL queries from natural language questions.
+        timeout = timeout or self.DEFAULT_TIMEOUT
+        row_limit = row_limit or self.DEFAULT_ROW_LIMIT
         
-Available tables:
-- customers (id, name, email, created_at, city, country)
-- products (id, name, category, price, stock_quantity)
-- orders (id, customer_id, order_date, total_amount, status)
-- order_items (id, order_id, product_id, quantity, line_total)
-
-Rules:
-1. Only generate SELECT queries
-2. Use proper JOINs when needed
-3. Include appropriate WHERE clauses
-4. Use LIMIT 100 if not specified
-5. Return only the SQL query, no explanations"""
-
-        prompt = f"Convert this natural language query to PostgreSQL SQL:\n\n{query}"
-        
-        try:
-            sql = await self.llm.generate_completion(
-                prompt=prompt,
-                system_prompt=system_prompt,
-                temperature=0.3,
-                max_tokens=500
-            )
-            
-            # Clean up SQL (remove markdown code blocks if present)
-            sql = sql.strip()
-            if sql.startswith("```sql"):
-                sql = sql[6:]
-            elif sql.startswith("```"):
-                sql = sql[3:]
-            if sql.endswith("```"):
-                sql = sql[:-3]
-            sql = sql.strip()
-            
-            logger.info(f"Generated SQL: {sql}")
-            return sql
-            
-        except Exception as e:
-            logger.error(f"Error generating SQL: {e}")
-            raise ValueError(f"Failed to generate SQL: {e}")
-    
-    async def _execute_sql(self, sql: str) -> List[Dict]:
-        """Execute SQL query against database."""
         try:
             # Basic validation - only allow SELECT statements
             sql_upper = sql.strip().upper()
@@ -96,21 +49,78 @@ Rules:
                 raise ValueError("Only SELECT queries are allowed")
             
             # Add LIMIT if not present (safety measure)
+            # But be careful - don't add LIMIT if there's already one or if it's an aggregation without GROUP BY
             if "LIMIT" not in sql_upper:
-                sql = f"{sql.rstrip(';')} LIMIT 10000"
+                # Remove trailing semicolon if present
+                sql_clean = sql.rstrip(';').strip()
+                # Only add LIMIT if it's not an aggregation query (those return single row anyway)
+                # Check if it's a simple aggregation
+                has_aggregation = any(func in sql_upper for func in ["COUNT(", "SUM(", "AVG(", "MAX(", "MIN("])
+                has_group_by = "GROUP BY" in sql_upper
+                
+                # Add LIMIT for non-aggregation queries or GROUP BY queries
+                if not has_aggregation or has_group_by:
+                    sql = f"{sql_clean} LIMIT {row_limit}"
+                else:
+                    sql = sql_clean
             
-            # Execute query
-            result = await self.db.execute(text(sql))
+            # Rollback any previous failed transaction to ensure clean state
+            try:
+                await self.db.rollback()
+            except:
+                pass
+            
+            # Execute query with timeout
+            # Use autocommit for SELECT queries to avoid transaction issues
+            try:
+                # For asyncpg, we need to use connection directly for autocommit
+                # But SQLAlchemy async doesn't support autocommit easily
+                # So we'll ensure we're in a clean transaction state
+                result = await asyncio.wait_for(
+                    self.db.execute(text(sql)),
+                    timeout=timeout
+                )
+            except asyncio.TimeoutError:
+                try:
+                    await self.db.rollback()
+                except:
+                    pass
+                raise ValueError(f"Query timeout after {timeout} seconds")
+            
             rows = result.fetchall()
             
             # Convert to list of dicts
             columns = result.keys()
             results = [dict(zip(columns, row)) for row in rows]
             
+            # For SELECT queries, we don't need to commit, but we should rollback
+            # to ensure clean state for next query
+            try:
+                await self.db.rollback()  # Rollback SELECT to clean transaction state
+            except:
+                pass
+            
+            # Enforce row limit (in case LIMIT wasn't applied)
+            if len(results) > row_limit:
+                logger.warning(f"Query returned {len(results)} rows, limiting to {row_limit}")
+                results = results[:row_limit]
+            
             logger.info(f"Query returned {len(results)} rows")
             return results
             
+        except asyncio.TimeoutError:
+            logger.error(f"Query timeout after {timeout} seconds")
+            try:
+                await self.db.rollback()
+            except:
+                pass
+            raise ValueError(f"Query timeout after {timeout} seconds")
         except Exception as e:
             logger.error(f"Error executing SQL: {e}")
+            # Rollback on error
+            try:
+                await self.db.rollback()
+            except:
+                pass
             raise ValueError(f"SQL execution failed: {e}")
 

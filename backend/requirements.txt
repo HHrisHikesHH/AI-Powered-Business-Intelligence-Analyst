@@ -31,6 +31,9 @@ sentence-transformers>=2.7.0
 # Version constraint ensures compatibility with sentence-transformers
 torch>=2.2.0,<2.3.0
 transformers>=4.30.0
+# NumPy: Pin to <2.0 for compatibility with torch and sentence-transformers
+# NumPy 2.x requires modules to be recompiled, which torch/sentence-transformers haven't done yet
+numpy<2.0
 
 # LLM API client
 groq==0.4.1
@@ -41,7 +44,15 @@ python-dotenv==1.0.0
 python-multipart==0.0.6
 loguru==0.7.2
 
+# SQL parsing and validation
+sqlparse==0.4.4
+
+# LangGraph for workflow orchestration
+langgraph==0.0.40
+langchain-core
+
 # Testing
 pytest==7.4.3
 pytest-asyncio==0.21.1
+pytest-mock==3.12.0
 
