@@ -455,34 +455,7 @@ else:
 
 ### SQL Validation Process
 
-```mermaid
-graph TB
-    SQL[Generated SQL] -->|1. Syntax Check| Syntax[sqlparse.parse]
-    Syntax -->|Valid?| SyntaxCheck{Valid}
-    SyntaxCheck -->|No| Error1[Return Error:<br/>Syntax Error]
-    SyntaxCheck -->|Yes| Safety[2. Safety Check]
-    
-    Safety -->|Check Keywords| Dangerous{Dangerous<br/>Keywords?}
-    Dangerous -->|Yes| Error2[Return Error:<br/>Dangerous Operation]
-    Dangerous -->|No| SelectOnly{SELECT<br/>Only?}
-    SelectOnly -->|No| Error3[Return Error:<br/>Only SELECT Allowed]
-    SelectOnly -->|Yes| Schema[3. Schema Check]
-    
-    Schema -->|Load Cache| Cache[Schema Cache<br/>table: [columns]]
-    Cache -->|Extract Tables| Extract[Extract Tables<br/>from SQL]
-    Extract -->|Check Existence| TableCheck{Tables<br/>Exist?}
-    TableCheck -->|No| Error4[Return Error:<br/>Table Not Found]
-    TableCheck -->|Yes| ColumnCheck{Columns<br/>Exist?}
-    ColumnCheck -->|No| Error5[Return Error:<br/>Column Not Found]
-    ColumnCheck -->|Yes| Valid[Return Valid]
-    
-    style Error1 fill:#ffe1e1
-    style Error2 fill:#ffe1e1
-    style Error3 fill:#ffe1e1
-    style Error4 fill:#ffe1e1
-    style Error5 fill:#ffe1e1
-    style Valid fill:#e1ffe1
-```
+![SQL Validation Process](./assets/sql_validation_process.png)
 
 ### Query Execution Safety Measures
 
