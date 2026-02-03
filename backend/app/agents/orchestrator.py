@@ -126,10 +126,16 @@ class Orchestrator:
             understanding = state["query_understanding"]
             query = state["natural_language_query"]
             
+            # Use enhanced complexity classification for better model routing
+            from app.core.llm_client import llm_service
+            complexity = llm_service.classify_from_understanding(understanding)
+            logger.debug(f"Classified query complexity: {complexity.value}")
+            
             sql = await self.sql_generation_agent.generate_sql(
                 query_understanding=understanding,
                 natural_language_query=query,
-                use_rag=True
+                use_rag=True,
+                complexity=complexity  # Pass complexity for better model selection
             )
             
             state["generated_sql"] = sql
