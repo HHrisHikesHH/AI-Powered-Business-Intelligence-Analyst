@@ -1,11 +1,13 @@
 """
 SQL Generation Agent.
 Generates SQL queries based on query understanding and schema context.
-Uses RAG to retrieve relevant schema information from pgvector.
+Uses hybrid RAG (vector + keyword + graph-based) to retrieve relevant schema information.
+Supports self-correction when errors are detected.
 """
 from loguru import logger
 from app.core.llm_client import llm_service, QueryComplexity
 from app.core.pgvector_client import vector_store
+from app.services.hybrid_rag import HybridRAG
 from app.agents.prompts import format_sql_generation_prompt, SQL_GENERATION_FEW_SHOT_EXAMPLES
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
@@ -20,12 +22,15 @@ class SQLGenerationAgent:
         self.llm = llm_service
         self.vector_store = vector_store
         self.db = db
+        self.hybrid_rag = HybridRAG(db) if db else None
     
     async def generate_sql(
         self,
         query_understanding: Dict[str, Any],
         natural_language_query: str,
-        use_rag: bool = True
+        use_rag: bool = True,
+        previous_error: Optional[str] = None,
+        previous_sql: Optional[str] = None
     ) -> str:
         """
         Generate SQL query from query understanding.
@@ -41,17 +46,41 @@ class SQLGenerationAgent:
         try:
             logger.info(f"Generating SQL for intent: {query_understanding['intent']}")
             
-            # Retrieve schema context using RAG
+            # Retrieve schema context using hybrid RAG
             schema_context = ""
             if use_rag:
-                schema_context = await self._retrieve_schema_context(
-                    query_understanding,
-                    natural_language_query
-                )
+                if self.hybrid_rag:
+                    # Use hybrid RAG (vector + keyword + graph-based)
+                    rag_results = await self.hybrid_rag.search(
+                        query=natural_language_query,
+                        query_understanding=query_understanding,
+                        n_results=10
+                    )
+                    schema_context = self.hybrid_rag.format_context(rag_results)
+                else:
+                    # Fallback to vector-only RAG
+                    schema_context = await self._retrieve_schema_context(
+                        query_understanding,
+                        natural_language_query
+                    )
             
             # If RAG didn't return enough context, add dynamic schema info
             if not schema_context or len(schema_context) < 50:
                 schema_context = await self._get_dynamic_schema_info()
+            
+            # Add error context if this is a retry
+            error_context = ""
+            if previous_error and previous_sql:
+                error_context = f"""
+PREVIOUS ATTEMPT FAILED:
+SQL: {previous_sql}
+Error: {previous_error}
+
+Please correct the SQL query based on the error above. Ensure:
+1. All table and column names exist in the schema
+2. SQL syntax is correct
+3. The query matches the user's intent: {natural_language_query}
+"""
             
             # Format prompt with context
             prompt = format_sql_generation_prompt(
@@ -66,6 +95,8 @@ class SQLGenerationAgent:
 {understanding_str}
 
 Original Query: {natural_language_query}
+
+{error_context}
 
 {prompt}"""
             
@@ -137,6 +168,37 @@ Just the SQL query, nothing else.""",
         except Exception as e:
             logger.error(f"Error generating SQL: {e}")
             raise ValueError(f"Failed to generate SQL: {e}")
+    
+    async def self_correct_sql(
+        self,
+        query_understanding: Dict[str, Any],
+        natural_language_query: str,
+        previous_sql: str,
+        error_message: str
+    ) -> str:
+        """
+        Self-correct SQL based on previous error.
+        
+        Args:
+            query_understanding: Query understanding output
+            natural_language_query: Original natural language query
+            previous_sql: Previously generated SQL that failed
+            error_message: Error message from validation or execution
+        
+        Returns:
+            Corrected SQL query string
+        """
+        logger.info(f"Attempting self-correction for SQL: {previous_sql[:100]}...")
+        logger.info(f"Error: {error_message}")
+        
+        # Generate SQL with error context
+        return await self.generate_sql(
+            query_understanding=query_understanding,
+            natural_language_query=natural_language_query,
+            use_rag=True,
+            previous_error=error_message,
+            previous_sql=previous_sql
+        )
     
     async def _retrieve_schema_context(
         self,
