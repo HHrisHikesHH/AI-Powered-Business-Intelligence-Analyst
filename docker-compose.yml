@@ -69,6 +69,33 @@ services:
       - ai_bi_network
     command: celery -A app.celery_app worker --loglevel=info
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ai_bi_prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
+    networks:
+      - ai_bi_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ai_bi_grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - ai_bi_network
+
 volumes:
   redis_data:
 
