@@ -25,6 +25,8 @@ class QueryResponse(BaseModel):
     natural_language_query: str
     generated_sql: Optional[str] = None
     results: Optional[list] = None
+    analysis: Optional[dict] = None
+    visualization: Optional[dict] = None
     error: Optional[str] = None
     execution_time_ms: Optional[float] = None
 
@@ -35,13 +37,15 @@ async def submit_query(
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Accept natural language query and return SQL results.
+    Accept natural language query and return SQL results with analysis and visualization.
     
-    Phase 1, Week 2: Uses multi-agent pipeline with:
-    - Query Understanding Agent
-    - SQL Generation Agent (with RAG)
+    Uses specialized multi-agent pipeline with:
+    - Query Understanding Agent (intent extraction)
+    - SQL Generation Agent (with RAG from pgvector)
     - SQL Validation
     - Query Execution
+    - Analysis Agent (insights and recommendations)
+    - Visualization Agent (chart configuration)
     """
     import time
     import uuid
@@ -77,8 +81,10 @@ async def submit_query(
             natural_language_query=request.query,
             generated_sql=result.get("sql", ""),
             results=result.get("results", []),
+            analysis=result.get("analysis"),
+            visualization=result.get("visualization"),
             error=result.get("error") if not result.get("validation_passed", False) else None,
-            execution_time_ms=execution_time
+            execution_time_ms=result.get("execution_time_ms") or execution_time
         )
         
         # Cache successful results (only if validation passed and no errors)
