@@ -47,27 +47,96 @@ class SQLGenerationAgent:
         try:
             logger.info(f"Generating SQL for intent: {query_understanding['intent']}")
             
-            # Retrieve schema context using hybrid RAG
-            schema_context = ""
+            # ALWAYS get actual schema from database first (grounding)
+            actual_schema = await self._get_dynamic_schema_info()
+            
+            # Ground query understanding against actual schema (remove non-existent columns)
+            grounded_understanding = await self._ground_query_understanding(
+                query_understanding,
+                actual_schema
+            )
+            
+            # Retrieve additional schema context using hybrid RAG (for relationships, examples)
+            schema_context = actual_schema  # Start with actual schema
             if use_rag:
                 if self.hybrid_rag:
-                    # Use hybrid RAG (vector + keyword + graph-based)
+                    # Use hybrid RAG (vector + keyword + graph-based) for additional context
                     rag_results = await self.hybrid_rag.search(
                         query=natural_language_query,
-                        query_understanding=query_understanding,
+                        query_understanding=grounded_understanding,
                         n_results=10
                     )
-                    schema_context = self.hybrid_rag.format_context(rag_results)
+                    rag_context = self.hybrid_rag.format_context(rag_results)
+                    if rag_context:
+                        schema_context = f"{actual_schema}\n\nAdditional Context:\n{rag_context}"
                 else:
                     # Fallback to vector-only RAG
-                    schema_context = await self._retrieve_schema_context(
-                        query_understanding,
+                    rag_context = await self._retrieve_schema_context(
+                        grounded_understanding,
                         natural_language_query
                     )
+                    if rag_context:
+                        schema_context = f"{actual_schema}\n\nAdditional Context:\n{rag_context}"
             
-            # If RAG didn't return enough context, add dynamic schema info
-            if not schema_context or len(schema_context) < 50:
-                schema_context = await self._get_dynamic_schema_info()
+            # Get available tables for context
+            schema_dict = await self._parse_schema_info()
+            available_tables = list(schema_dict.keys())
+            
+            # CRITICAL: Validate that we have at least one valid table before proceeding
+            original_tables = query_understanding.get("tables", [])
+            grounded_tables = grounded_understanding.get("tables", [])
+            
+            # If no valid tables exist, fail immediately with clear error
+            if len(grounded_tables) == 0:
+                if len(original_tables) > 0:
+                    # User asked about tables that don't exist
+                    removed_tables = [t for t in original_tables if t.lower() not in [vt.lower() for vt in available_tables]]
+                    raise ValueError(
+                        f"The query references table(s) that do NOT exist in the database: {', '.join(removed_tables)}. "
+                        f"Available tables in the database: {', '.join(available_tables)}. "
+                        f"Please reformulate your query using only the available tables."
+                    )
+                else:
+                    # Query understanding didn't identify any tables
+                    raise ValueError(
+                        f"Cannot generate SQL: No valid tables identified from the query. "
+                        f"The query may reference entities that don't exist in the database. "
+                        f"Available tables: {', '.join(available_tables)}"
+                    )
+            
+            # Check if grounding removed important elements
+            schema_limitation_note = ""
+            original_filters = query_understanding.get("filters", [])
+            grounded_filters = grounded_understanding.get("filters", [])
+            
+            # If critical filters were removed, we should inform the user
+            if len(original_filters) > len(grounded_filters):
+                removed_filters = [f.get("column", "unknown") for f in original_filters 
+                                 if f not in grounded_filters]
+                
+                schema_limitation_note = f"""
+⚠️ SCHEMA LIMITATION DETECTED:
+The user's query referenced columns that do not exist in the database: {', '.join(removed_filters)}
+These columns have been removed from the query understanding.
+
+IMPORTANT: You MUST NOT use these non-existent columns in your SQL. 
+Generate SQL using ONLY the columns that exist in the schema provided above.
+If the query cannot be answered without these columns, you may need to return a simpler query or omit that filter.
+"""
+            # If critical filters were removed, we should inform the user
+            elif len(original_filters) > len(grounded_filters):
+                removed_filters = [f.get("column", "unknown") for f in original_filters 
+                                 if f not in grounded_filters]
+                
+                schema_limitation_note = f"""
+⚠️ SCHEMA LIMITATION DETECTED:
+The user's query referenced columns that do not exist in the database: {', '.join(removed_filters)}
+These columns have been removed from the query understanding.
+
+IMPORTANT: You MUST NOT use these non-existent columns in your SQL. 
+Generate SQL using ONLY the columns that exist in the schema provided above.
+If the query cannot be answered without these columns, you may need to return a simpler query or omit that filter.
+"""
             
             # Add error context if this is a retry
             error_context = ""
@@ -83,19 +152,34 @@ Please correct the SQL query based on the error above. Ensure:
 3. The query matches the user's intent: {natural_language_query}
 """
             
-            # Format prompt with context
+            # Format prompt with context (use grounded understanding)
             prompt = format_sql_generation_prompt(
-                query_understanding=query_understanding,
+                query_understanding=grounded_understanding,
                 schema_context=schema_context,
                 few_shot_examples=SQL_GENERATION_FEW_SHOT_EXAMPLES
             )
             
-            # Add query understanding as context
-            understanding_str = json.dumps(query_understanding, indent=2)
+            # Add grounded query understanding as context
+            understanding_str = json.dumps(grounded_understanding, indent=2)
+            
+            # Add explicit validation reminder
+            validation_reminder = f"""
+✅ VALIDATION CHECK:
+- Query Understanding Tables: {grounded_tables}
+- Available Tables in Schema: {available_tables}
+- All required tables exist: {'YES' if all(t.lower() in [at.lower() for at in available_tables] for t in grounded_tables) else 'NO - DO NOT GENERATE SQL'}
+
+⚠️ REMINDER: If any table in the query understanding does not exist in the schema above, DO NOT generate SQL.
+"""
+            
             full_prompt = f"""Query Understanding:
 {understanding_str}
 
 Original Query: {natural_language_query}
+
+{validation_reminder}
+
+{schema_limitation_note}
 
 {error_context}
 
@@ -115,23 +199,34 @@ Original Query: {natural_language_query}
                         prompt=full_prompt,
                         system_prompt="""You are a SQL Generation Agent. Your ONLY job is to generate a valid PostgreSQL SELECT query.
 
+🚨 CRITICAL ANTI-HALLUCINATION RULES:
+1. BEFORE generating SQL, verify ALL tables in query_understanding.tables exist in the schema
+2. If ANY table does not exist, return an ERROR message starting with "ERROR:" instead of SQL
+3. DO NOT default to "customers" or any other table if the requested table doesn't exist
+4. DO NOT generate SQL if query_understanding.tables is empty
+5. ONLY generate SQL if ALL required tables are present in the schema
+
 CRITICAL RULES:
 1. Return ONLY the SQL query - no explanations, no markdown, no code blocks
-2. Start directly with SELECT
-3. Use proper PostgreSQL syntax
-4. Include all necessary clauses (FROM, WHERE, GROUP BY, ORDER BY, LIMIT)
-5. End with semicolon
+2. OR return an error message starting with "ERROR:" if tables don't exist
+3. Start directly with SELECT (or ERROR:)
+4. Use proper PostgreSQL syntax
+5. Include all necessary clauses (FROM, WHERE, GROUP BY, ORDER BY, LIMIT)
+6. End with semicolon
 
 Example format:
 SELECT * FROM customers LIMIT 100;
+
+OR if table doesn't exist:
+ERROR: The table 'cars' does not exist in the database. Available tables: customers, products, orders, order_items
 
 Do NOT include:
 - Explanations
 - Markdown code blocks (```sql)
 - Comments
-- Any text before or after the SQL
+- Any text before or after the SQL (except ERROR: prefix)
 
-Just the SQL query, nothing else.""",
+Just the SQL query or ERROR message, nothing else.""",
                         temperature=0.1,  # Very low temperature for deterministic SQL
                         max_tokens=800,
                         complexity=complexity,
@@ -140,10 +235,29 @@ Just the SQL query, nothing else.""",
                     
                     # Check if response is valid
                     if response and response.strip():
+                        # Check if LLM returned an error message
+                        response_upper = response.strip().upper()
+                        if response_upper.startswith("ERROR:"):
+                            error_msg = response.strip()
+                            logger.warning(f"LLM detected schema issue: {error_msg}")
+                            raise ValueError(error_msg.replace("ERROR:", "").strip())
+                        
                         sql = self._clean_sql(response)
                         
                         # Validate SQL is not empty and starts with SELECT
                         if sql and sql.strip().upper().startswith("SELECT"):
+                            # Additional validation: Check that SQL uses only valid tables
+                            sql_tables = self._extract_tables_from_sql(sql)
+                            schema_tables_lower = [t.lower() for t in available_tables]
+                            invalid_tables = [t for t in sql_tables if t.lower() not in schema_tables_lower]
+                            
+                            if invalid_tables:
+                                logger.warning(f"SQL contains invalid tables: {invalid_tables}")
+                                raise ValueError(
+                                    f"Generated SQL references non-existent tables: {', '.join(invalid_tables)}. "
+                                    f"Available tables: {', '.join(available_tables)}"
+                                )
+                            
                             logger.info(f"Generated SQL: {sql}")
                             return sql
                         else:
@@ -167,6 +281,14 @@ Just the SQL query, nothing else.""",
             logger.info(f"Generated SQL: {sql}")
             return sql
             
+        except ValueError as e:
+            # Re-raise ValueError (these are schema limitation errors we want to propagate)
+            error_msg = str(e)
+            if "does not exist" in error_msg.lower() or "available tables" in error_msg.lower():
+                logger.warning(f"Schema limitation detected: {error_msg}")
+                raise ValueError(error_msg)
+            else:
+                raise ValueError(f"Failed to generate SQL: {error_msg}")
         except Exception as e:
             logger.error(f"Error generating SQL: {e}")
             raise ValueError(f"Failed to generate SQL: {e}")
@@ -257,6 +379,176 @@ Just the SQL query, nothing else.""",
             logger.warning(f"Error retrieving schema context: {e}")
             return ""
     
+    async def _ground_query_understanding(
+        self,
+        query_understanding: Dict[str, Any],
+        schema_info: str
+    ) -> Dict[str, Any]:
+        """
+        Ground query understanding against actual schema.
+        Removes non-existent columns and tables from query understanding.
+        
+        Args:
+            query_understanding: Original query understanding
+            schema_info: Schema information string
+        
+        Returns:
+            Grounded query understanding with only valid columns/tables
+        """
+        if not self.db:
+            logger.warning("No database session for schema grounding")
+            return query_understanding
+        
+        try:
+            # Parse schema info to get actual columns per table
+            schema_dict = await self._parse_schema_info()
+            
+            grounded = query_understanding.copy()
+            
+            # Validate and filter tables
+            tables = grounded.get("tables", [])
+            valid_tables = []
+            for table in tables:
+                if table.lower() in [t.lower() for t in schema_dict.keys()]:
+                    # Find actual table name (case-sensitive)
+                    actual_table = next(
+                        (t for t in schema_dict.keys() if t.lower() == table.lower()),
+                        table
+                    )
+                    valid_tables.append(actual_table)
+                else:
+                    logger.warning(f"Table '{table}' not found in schema, removing from query understanding")
+            
+            grounded["tables"] = valid_tables
+            
+            # Validate and filter columns
+            columns = grounded.get("columns", [])
+            valid_columns = []
+            for col in columns:
+                # Check if column exists in any of the valid tables
+                found = False
+                for table in valid_tables:
+                    if col.lower() in [c.lower() for c in schema_dict.get(table, [])]:
+                        found = True
+                        break
+                
+                if found:
+                    valid_columns.append(col)
+                else:
+                    logger.warning(f"Column '{col}' not found in schema, removing from query understanding")
+            
+            grounded["columns"] = valid_columns
+            
+            # Validate and filter filters
+            filters = grounded.get("filters", [])
+            valid_filters = []
+            for f in filters:
+                col = f.get("column", "")
+                # Check if filter column exists
+                found = False
+                for table in valid_tables:
+                    if col.lower() in [c.lower() for c in schema_dict.get(table, [])]:
+                        found = True
+                        break
+                
+                if found:
+                    valid_filters.append(f)
+                else:
+                    logger.warning(f"Filter column '{col}' not found in schema, removing filter")
+            
+            grounded["filters"] = valid_filters
+            
+            # Validate group_by columns
+            group_by = grounded.get("group_by", [])
+            valid_group_by = []
+            for col in group_by:
+                found = False
+                for table in valid_tables:
+                    if col.lower() in [c.lower() for c in schema_dict.get(table, [])]:
+                        found = True
+                        break
+                
+                if found:
+                    valid_group_by.append(col)
+                else:
+                    logger.warning(f"GROUP BY column '{col}' not found in schema, removing")
+            
+            grounded["group_by"] = valid_group_by
+            
+            # Validate order_by column
+            order_by = grounded.get("order_by")
+            if order_by and isinstance(order_by, dict):
+                col = order_by.get("column", "")
+                if col:
+                    found = False
+                    for table in valid_tables:
+                        if col.lower() in [c.lower() for c in schema_dict.get(table, [])]:
+                            found = True
+                            break
+                    
+                    if not found:
+                        logger.warning(f"ORDER BY column '{col}' not found in schema, removing")
+                        grounded["order_by"] = None
+            
+            # If query understanding was modified, log it
+            if (len(valid_tables) < len(tables) or 
+                len(valid_columns) < len(columns) or 
+                len(valid_filters) < len(filters)):
+                logger.warning(
+                    f"Query understanding grounded: removed {len(tables) - len(valid_tables)} invalid tables, "
+                    f"{len(columns) - len(valid_columns)} invalid columns, "
+                    f"{len(filters) - len(valid_filters)} invalid filters"
+                )
+            
+            # If all tables were removed, this is a critical error - user asked about non-existent entity
+            if len(tables) > 0 and len(valid_tables) == 0:
+                removed_tables = [t for t in tables if t.lower() not in [vt.lower() for vt in schema_dict.keys()]]
+                available_tables = list(schema_dict.keys())
+                raise ValueError(
+                    f"The query references table(s) that do not exist in the database: {', '.join(removed_tables)}. "
+                    f"Available tables: {', '.join(available_tables)}. "
+                    f"Please reformulate your query using only the available tables."
+                )
+            
+            return grounded
+            
+        except Exception as e:
+            logger.error(f"Error grounding query understanding: {e}")
+            return query_understanding
+    
+    async def _parse_schema_info(self) -> Dict[str, List[str]]:
+        """
+        Parse schema information into a dictionary of table -> columns.
+        
+        Returns:
+            Dictionary mapping table names to lists of column names
+        """
+        if not self.db:
+            return {}
+        
+        try:
+            result = await self.db.execute(text("""
+                SELECT table_name, column_name
+                FROM information_schema.columns
+                WHERE table_schema = 'public'
+                ORDER BY table_name, ordinal_position
+            """))
+            
+            schema_dict = {}
+            for row in result.fetchall():
+                table_name = row[0]
+                column_name = row[1]
+                
+                if table_name not in schema_dict:
+                    schema_dict[table_name] = []
+                schema_dict[table_name].append(column_name)
+            
+            return schema_dict
+            
+        except Exception as e:
+            logger.error(f"Error parsing schema info: {e}")
+            return {}
+    
     async def _get_dynamic_schema_info(self) -> str:
         """
         Get schema information dynamically from the database.
@@ -284,7 +576,10 @@ Just the SQL query, nothing else.""",
                 logger.warning("No tables found in database")
                 return ""
             
-            schema_parts = ["Available Tables:"]
+            schema_parts = ["=" * 60]
+            schema_parts.append("ACTUAL DATABASE SCHEMA - USE ONLY THESE COLUMNS")
+            schema_parts.append("=" * 60)
+            schema_parts.append("")
             
             # Get columns for each table
             for table in tables:
@@ -300,7 +595,9 @@ Just the SQL query, nothing else.""",
                 column_names = [col[0] for col in columns]
                 
                 if column_names:
-                    schema_parts.append(f"- {table} ({', '.join(column_names)})")
+                    schema_parts.append(f"Table: {table}")
+                    schema_parts.append(f"  Columns: {', '.join(column_names)}")
+                    schema_parts.append("")
             
             # Get relationships (foreign keys)
             relationships_result = await self.db.execute(text("""
@@ -538,6 +835,31 @@ Just the SQL query, nothing else.""",
         except Exception as e:
             logger.error(f"Error in fallback SQL generation: {e}")
             raise ValueError(f"Failed to generate fallback SQL: {e}")
+    
+    def _extract_tables_from_sql(self, sql: str) -> List[str]:
+        """
+        Extract table names from SQL query for validation.
+        
+        Args:
+            sql: SQL query string
+        
+        Returns:
+            List of table names found in SQL
+        """
+        import re
+        tables = []
+        sql_upper = sql.upper()
+        
+        # Extract FROM clause
+        from_matches = re.findall(r'\bFROM\s+(\w+)', sql_upper)
+        tables.extend(from_matches)
+        
+        # Extract JOIN clauses
+        join_matches = re.findall(r'\bJOIN\s+(\w+)', sql_upper)
+        tables.extend(join_matches)
+        
+        # Remove duplicates and normalize
+        return list(set([t.lower() for t in tables]))
     
     async def _infer_table_from_query(self, query_lower: str) -> Optional[str]:
         """
