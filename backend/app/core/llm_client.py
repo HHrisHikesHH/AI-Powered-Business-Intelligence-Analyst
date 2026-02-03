@@ -13,6 +13,7 @@ from enum import Enum
 import json
 
 groq_client: Optional[Groq] = None
+_cached_api_key: Optional[str] = None
 
 
 class QueryComplexity(str, Enum):
@@ -23,14 +24,44 @@ class QueryComplexity(str, Enum):
 
 
 def get_groq_client() -> Groq:
-    """Get or initialize Groq client."""
-    global groq_client
-    if groq_client is None:
-        if not settings.GROQ_API_KEY:
+    """
+    Get or initialize Groq client.
+    Reinitializes if API key has changed.
+    """
+    global groq_client, _cached_api_key
+    
+    current_api_key = settings.GROQ_API_KEY
+    
+    # Check if we need to reinitialize (new key or no client)
+    if groq_client is None or _cached_api_key != current_api_key:
+        if not current_api_key:
             raise ValueError("GROQ_API_KEY is not set in environment variables")
-        groq_client = Groq(api_key=settings.GROQ_API_KEY)
-        logger.info("Groq client initialized successfully")
+        
+        # Check if this is a key change (not just initial initialization)
+        was_key_change = _cached_api_key is not None and _cached_api_key != current_api_key
+        
+        # Reinitialize client with new API key
+        groq_client = Groq(api_key=current_api_key)
+        _cached_api_key = current_api_key
+        
+        # Log appropriately
+        if was_key_change:
+            logger.info("Groq client reinitialized with new API key")
+        else:
+            logger.info("Groq client initialized successfully")
+    
     return groq_client
+
+
+def reset_groq_client():
+    """
+    Reset the cached Groq client.
+    Useful when API key changes and you want to force reinitialization.
+    """
+    global groq_client, _cached_api_key
+    groq_client = None
+    _cached_api_key = None
+    logger.info("Groq client cache reset")
 
 
 class LLMService:
@@ -44,13 +75,18 @@ class LLMService:
     """
     
     def __init__(self):
-        self.client = get_groq_client()
+        # Don't cache client at init - get it fresh each time to pick up API key changes
         self.models = {
             QueryComplexity.SIMPLE: settings.LLM_MODEL_SIMPLE,
             QueryComplexity.MEDIUM: settings.LLM_MODEL_MEDIUM,
             QueryComplexity.COMPLEX: settings.LLM_MODEL_COMPLEX,
         }
         self.default_model = settings.LLM_MODEL_DEFAULT
+    
+    @property
+    def client(self) -> Groq:
+        """Get Groq client, reinitializing if API key changed."""
+        return get_groq_client()
     
     def _select_model(self, complexity: Optional[QueryComplexity] = None) -> str:
         """
