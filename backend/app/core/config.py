@@ -4,6 +4,51 @@ Loads environment variables and provides typed configuration.
 """
 from pydantic_settings import BaseSettings
 from typing import Optional
+from pathlib import Path
+import os
+
+# Load .env file explicitly using python-dotenv
+# This ensures .env is loaded regardless of where the code runs from
+from dotenv import load_dotenv
+
+# Find .env file - check multiple possible locations
+env_paths = [
+    Path(__file__).parent.parent.parent / ".env",  # backend/.env
+    Path(__file__).parent.parent.parent.parent / ".env",  # root/.env
+    Path.cwd() / ".env",  # Current working directory
+    Path.home() / ".env",  # Home directory (fallback)
+]
+
+# Load the first .env file found
+env_loaded = False
+loaded_path = None
+for env_path in env_paths:
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path, override=True)
+        env_loaded = True
+        loaded_path = env_path
+        break
+
+# If no .env file found, try loading from default location (current directory)
+if not env_loaded:
+    load_dotenv(override=True)
+    loaded_path = "current directory (default)"
+
+# Log which .env file was loaded (but don't log sensitive values)
+# Use try-except to avoid issues if loguru isn't available yet
+try:
+    from loguru import logger
+    if env_loaded or os.getenv("GROQ_API_KEY"):
+        logger.info(f"Environment variables loaded from: {loaded_path}")
+        # Check if GROQ_API_KEY is set (without logging the actual key)
+        if os.getenv("GROQ_API_KEY"):
+            key_length = len(os.getenv("GROQ_API_KEY", ""))
+            logger.info(f"GROQ_API_KEY is set (length: {key_length} characters)")
+        else:
+            logger.warning("GROQ_API_KEY is not set in environment variables")
+except ImportError:
+    # Loguru not available yet, skip logging
+    pass
 
 
 class Settings(BaseSettings):
@@ -56,10 +101,23 @@ class Settings(BaseSettings):
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/0"
     
     class Config:
-        env_file = ".env"
+        # env_file is handled by explicit load_dotenv() above
+        # This ensures .env is loaded before Pydantic tries to read it
         case_sensitive = True
         extra = "ignore"  # Ignore extra environment variables
+        env_file_encoding = "utf-8"
 
 
 settings = Settings()
+
+# Verify GROQ_API_KEY was loaded correctly after Settings initialization
+try:
+    from loguru import logger
+    if settings.GROQ_API_KEY:
+        key_length = len(settings.GROQ_API_KEY)
+        logger.info(f"Settings loaded: GROQ_API_KEY is set (length: {key_length} characters)")
+    else:
+        logger.warning("Settings loaded: GROQ_API_KEY is NOT set. Please check your .env file.")
+except ImportError:
+    pass
 
