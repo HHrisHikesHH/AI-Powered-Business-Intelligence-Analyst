@@ -1,12 +1,15 @@
 """
 Query Understanding Agent.
 Parses natural language queries and extracts intent, tables, columns, filters, etc.
+Uses caching to improve performance.
 """
 from loguru import logger
 from app.core.llm_client import llm_service, QueryComplexity
+from app.core.redis_client import cache_service
 from app.agents.prompts import format_query_understanding_prompt
 from typing import Dict, Any, Optional
 import json
+import hashlib
 
 
 class QueryUnderstandingAgent:
@@ -37,6 +40,13 @@ class QueryUnderstandingAgent:
         """
         try:
             logger.info(f"Understanding query: {query}")
+            
+            # Check cache first
+            cache_key = f"query_understanding:{hashlib.md5(query.encode()).hexdigest()}"
+            cached = await cache_service.get(cache_key)
+            if cached:
+                logger.info("Using cached query understanding")
+                return cached
             
             # Format prompt
             prompt = format_query_understanding_prompt(query)
@@ -79,6 +89,10 @@ class QueryUnderstandingAgent:
                 understanding.setdefault("needs_clarification", False)
                 
                 logger.info(f"Query understood: {understanding['intent']}, tables: {understanding['tables']}")
+                
+                # Cache for 24 hours
+                await cache_service.set(cache_key, understanding, ttl=86400)
+                
                 return understanding
                 
             except json.JSONDecodeError as e:
