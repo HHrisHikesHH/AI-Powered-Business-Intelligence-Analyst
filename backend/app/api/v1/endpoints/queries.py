@@ -10,6 +10,7 @@ from app.core.database import get_db
 from app.core.redis_client import cache_service
 from app.agents.orchestrator import Orchestrator
 from app.services.token_tracker import token_tracker
+from app.services.metrics import metrics_service
 
 router = APIRouter()
 
@@ -77,12 +78,17 @@ async def submit_query(
         # Process query through pipeline
         result = await orchestrator.process_query(request.query)
         
-        execution_time = (time.time() - start_time) * 1000
+        execution_time_ms = (time.time() - start_time) * 1000
         
-        # Check if validation passed
-        if not result.get("validation_passed", False):
-            error_msg = result.get("error", "SQL validation failed")
-            logger.warning(f"Query validation failed: {error_msg}")
+        # Determine validation and error status
+        validation_passed = result.get("validation_passed", False)
+        raw_error = result.get("error")
+        error_message = raw_error
+        if not validation_passed and not error_message:
+            # If validation failed but no explicit error was set, provide a generic message
+            error_message = "SQL validation failed"
+        if not validation_passed or error_message:
+            logger.warning(f"Query processing reported error: {error_message}")
         
         # Apply pagination to results
         results = result.get("results", [])
@@ -108,7 +114,6 @@ async def submit_query(
             }
         
         # Get cost breakdown from token tracker
-        from app.services.token_tracker import token_tracker
         cost_breakdown = {
             "tokens": token_tracker.get_query_tokens(query_id),
             "cost": token_tracker.get_query_cost(query_id)
@@ -121,11 +126,23 @@ async def submit_query(
             results=paginated_results,
             analysis=result.get("analysis"),
             visualization=result.get("visualization"),
-            error=result.get("error") if not result.get("validation_passed", False) else None,
-            execution_time_ms=result.get("execution_time_ms") or execution_time,
+            # Surface any execution/validation error back to the client
+            error=error_message,
+            execution_time_ms=result.get("execution_time_ms") or execution_time_ms,
             pagination=pagination_info,
             cost_breakdown=cost_breakdown
         )
+        
+        # Record metrics for admin dashboard
+        try:
+            metrics_service.record_query(
+                success=validation_passed and not error_message,
+                latency_ms=response.execution_time_ms or execution_time_ms,
+                cost=cost_breakdown["cost"],
+                user_id=request.user_id,
+            )
+        except Exception as metrics_error:
+            logger.warning(f"Failed to record metrics: {metrics_error}")
         
         # Cache successful results (only if validation passed and no errors)
         if result.get("validation_passed", False) and not result.get("error"):
