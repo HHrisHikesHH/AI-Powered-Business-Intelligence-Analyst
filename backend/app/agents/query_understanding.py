@@ -109,33 +109,37 @@ class QueryUnderstandingAgent:
         """
         Create a fallback understanding when LLM parsing fails.
         Uses simple heuristics to extract basic information.
+        
+        CRITICAL: Do NOT default to any table. If we can't identify a valid table,
+        return empty tables list to prevent hallucination.
         """
         query_lower = query.lower()
         
-        # Simple table detection
+        # Simple table detection - only match if we're confident
         tables = []
         if "customer" in query_lower:
             tables.append("customers")
         if "product" in query_lower:
             tables.append("products")
-        if "order" in query_lower:
+        if "order" in query_lower and "item" not in query_lower:
             tables.append("orders")
         if "order_item" in query_lower or "order item" in query_lower:
             tables.append("order_items")
         
-        if not tables:
-            tables = ["customers"]  # Default fallback
+        # CRITICAL FIX: Do NOT default to customers table
+        # If we can't identify a table, return empty list
+        # This will cause grounding to fail properly instead of hallucinating
         
         return {
             "intent": query,
-            "tables": tables,
+            "tables": tables,  # Empty if no match - this is correct behavior
             "columns": [],
             "filters": [],
             "aggregations": ["COUNT"] if "how many" in query_lower or "count" in query_lower else [],
             "group_by": [],
             "order_by": None,
             "limit": None,
-            "ambiguities": ["Failed to parse query - using fallback heuristics"],
+            "ambiguities": ["Failed to parse query - using fallback heuristics. No valid tables identified."] if not tables else ["Failed to parse query - using fallback heuristics"],
             "needs_clarification": True
         }
 

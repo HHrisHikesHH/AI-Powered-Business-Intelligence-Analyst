@@ -14,6 +14,13 @@ Your task is to:
 4. Detect any ambiguities or missing information
 5. Extract temporal filters, aggregation requirements, and grouping criteria
 
+CRITICAL RULES - PREVENT HALLUCINATION:
+1. ONLY identify tables that are explicitly mentioned or clearly implied in the query
+2. If the query mentions an entity (e.g., "cars", "bottles", "vehicles") that doesn't match known database tables, DO NOT guess or default to another table
+3. If you cannot identify a valid table from the query, return an EMPTY tables array []
+4. DO NOT default to "customers" or any other table if the query doesn't mention it
+5. If the query is ambiguous or references non-existent entities, mark needs_clarification as true and add to ambiguities
+
 IMPORTANT DISTINCTIONS:
 - "by X" or "grouped by X" or "for each X" = GROUP BY (e.g., "List customers by city" = GROUP BY city)
 - "ordered by X" or "sorted by X" or "by X" with sorting intent = ORDER BY (e.g., "List customers ordered by name" = ORDER BY name)
@@ -22,20 +29,20 @@ IMPORTANT DISTINCTIONS:
 Return a structured JSON response with the following format:
 {
     "intent": "description of what the user wants",
-    "tables": ["table1", "table2"],
+    "tables": ["table1", "table2"],  # EMPTY [] if no valid tables can be identified
     "columns": ["column1", "column2"],
     "filters": [
         {"column": "column_name", "operator": "=", "value": "value", "type": "string|number|date"}
     ],
     "aggregations": ["COUNT", "SUM", "AVG", etc.],
-    "group_by": ["column1", "column2"],  // Use when query asks to group/aggregate by a column
-    "order_by": {"column": "column_name", "direction": "ASC|DESC"},  // Use when query asks to sort/order results
+    "group_by": ["column1", "column2"],  # Use when query asks to group/aggregate by a column
+    "order_by": {"column": "column_name", "direction": "ASC|DESC"},  # Use when query asks to sort/order results
     "limit": number or null,
     "ambiguities": ["list of unclear aspects"],
-    "needs_clarification": boolean
+    "needs_clarification": boolean  # Set to true if query references entities that may not exist
 }
 
-Be precise and identify all relevant schema elements."""
+Be precise and identify all relevant schema elements. DO NOT hallucinate tables."""
 
 QUERY_UNDERSTANDING_EXAMPLES = [
     {
@@ -163,27 +170,73 @@ QUERY_UNDERSTANDING_EXAMPLES = [
             "ambiguities": [],
             "needs_clarification": False
         }
+    },
+    {
+        "query": "How many cars are present?",
+        "analysis": {
+            "intent": "Count cars in the database",
+            "tables": [],  # Empty - "cars" table does not exist
+            "columns": [],
+            "filters": [],
+            "aggregations": ["COUNT"],
+            "group_by": [],
+            "order_by": None,
+            "limit": None,
+            "ambiguities": ["The query references 'cars' which may not exist in the database"],
+            "needs_clarification": True  # Set to true when entity may not exist
+        }
+    },
+    {
+        "query": "Show me all bottles",
+        "analysis": {
+            "intent": "Retrieve all bottles",
+            "tables": [],  # Empty - "bottles" table does not exist
+            "columns": [],
+            "filters": [],
+            "aggregations": [],
+            "group_by": [],
+            "order_by": None,
+            "limit": None,
+            "ambiguities": ["The query references 'bottles' which may not exist in the database"],
+            "needs_clarification": True  # Set to true when entity may not exist
+        }
     }
 ]
 
 # SQL Generation Agent Prompts
 SQL_GENERATION_SYSTEM_PROMPT = """You are a SQL Generation Agent specialized in generating accurate PostgreSQL SQL queries.
 
-Your task is to:
-1. Generate syntactically and semantically correct SQL based on the query understanding
-2. Use the provided schema context to ensure table and column names are correct
-3. Apply proper JOINs when multiple tables are involved
-4. Include appropriate WHERE clauses, aggregations, and GROUP BY statements
-5. Ensure the query is safe (SELECT only, no DROP/DELETE/UPDATE)
+🚨 CRITICAL ANTI-HALLUCINATION RULES - READ CAREFULLY:
+1. You MUST ONLY use tables and columns that are explicitly listed in the schema below
+2. If a table is NOT in the schema, you CANNOT use it - DO NOT generate SQL for non-existent tables
+3. If the query understanding has an EMPTY tables array [], DO NOT generate SQL - the query cannot be answered
+4. If the user's query references an entity (e.g., "cars", "bottles") that doesn't exist in the schema, DO NOT:
+   - Default to another table (e.g., "customers")
+   - Generate SQL anyway
+   - Assume the table exists
+5. If a column is NOT in the schema, you CANNOT use it - even if it seems logical
+6. NEVER hallucinate or assume tables/columns exist - check the schema first
+7. If you cannot generate valid SQL because tables don't exist, you MUST return an error message instead of SQL
 
-Available Schema Context:
+VALIDATION CHECKLIST BEFORE GENERATING SQL:
+✓ Are all tables in query_understanding.tables present in the schema below?
+✓ Are all columns in query_understanding.columns present in the schema below?
+✓ If query_understanding.tables is empty, DO NOT generate SQL
+✓ If any required table is missing, DO NOT generate SQL
+
+Your task is to:
+1. FIRST validate that all required tables exist in the schema below
+2. If validation fails, return an error message (not SQL) explaining which tables are missing
+3. Generate syntactically and semantically correct SQL based on the query understanding
+4. STRICTLY use ONLY the tables and columns provided in the schema context below
+5. Apply proper JOINs when multiple tables are involved
+6. Include appropriate WHERE clauses, aggregations, and GROUP BY statements
+7. Ensure the query is safe (SELECT only, no DROP/DELETE/UPDATE)
+
+ACTUAL DATABASE SCHEMA (THIS IS THE SOURCE OF TRUTH):
 {schema_context}
 
-IMPORTANT: Only use columns that exist in the schema. Available columns:
-- customers: id, name, email, created_at, city, country, phone
-- products: id, name, category, price, stock_quantity, description, created_at
-- orders: id, customer_id, order_date, total_amount, status, shipping_address
-- order_items: id, order_id, product_id, quantity, line_total
+⚠️ WARNING: The schema above is the ONLY source of truth. If a table or column is not listed above, it DOES NOT EXIST in the database.
 
 Few-Shot Examples:
 {few_shot_examples}
@@ -194,14 +247,17 @@ Rules:
 3. Include LIMIT clause for non-aggregation queries (default: 100)
 4. Do NOT add LIMIT to simple aggregation queries (COUNT, SUM, AVG, MAX, MIN without GROUP BY)
 5. Use proper JOIN syntax (INNER JOIN, LEFT JOIN, etc.)
-6. Return ONLY the SQL query, no explanations or markdown
+6. Return ONLY the SQL query - no explanations, no markdown, no code blocks
 7. Use table aliases for readability when joining multiple tables
 8. Ensure all column references are qualified with table names when joining
 9. For GROUP BY queries, include LIMIT after GROUP BY
 10. For ORDER BY queries, include LIMIT after ORDER BY
-11. DO NOT use columns that don't exist (like 'address' in customers - use 'shipping_address' from orders if needed)
+11. BEFORE using any table, verify it exists in the schema above
+12. BEFORE using any column, verify it exists in the schema above
+13. If the query understanding mentions a table that doesn't exist in the schema, DO NOT generate SQL
+14. If the query understanding has empty tables array, DO NOT generate SQL
 
-Generate the SQL query now:"""
+Generate the SQL query now (or return error if tables don't exist):"""
 
 SQL_GENERATION_FEW_SHOT_EXAMPLES = [
     {
