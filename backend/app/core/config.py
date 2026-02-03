@@ -37,6 +37,11 @@ class Settings(BaseSettings):
     BACKEND_PORT: int = 8001
     LOG_LEVEL: str = "INFO"
     
+    # Performance settings
+    DEFAULT_PAGE_SIZE: int = 100
+    MAX_PAGE_SIZE: int = 1000
+    EMBEDDING_BATCH_SIZE: int = 50
+    
     @property
     def database_url(self) -> str:
         """Construct PostgreSQL connection URL."""
