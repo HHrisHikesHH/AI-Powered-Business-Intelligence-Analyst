@@ -30,7 +30,8 @@ class SQLGenerationAgent:
         natural_language_query: str,
         use_rag: bool = True,
         previous_error: Optional[str] = None,
-        previous_sql: Optional[str] = None
+        previous_sql: Optional[str] = None,
+        complexity: Optional[Any] = None
     ) -> str:
         """
         Generate SQL query from query understanding.
@@ -100,8 +101,9 @@ Original Query: {natural_language_query}
 
 {prompt}"""
             
-            # Determine model complexity based on query understanding
-            complexity = self._determine_complexity(query_understanding)
+            # Use provided complexity or determine from query understanding
+            if complexity is None:
+                complexity = self._determine_complexity(query_understanding)
             
             # Generate SQL with retry logic
             sql = None
