@@ -2,11 +2,13 @@
 LLM client for Groq API with support for multiple models.
 Provides interface for natural language processing and SQL generation.
 Supports intelligent model routing based on query complexity.
+Includes token tracking for cost optimization.
 """
 from groq import Groq
 from loguru import logger
 from app.core.config import settings
-from typing import Optional, Dict, List, Literal
+from app.services.token_tracker import token_tracker
+from typing import Optional, Dict, List, Literal, Any
 from enum import Enum
 import json
 
@@ -102,6 +104,20 @@ class LLMService:
         else:
             return QueryComplexity.SIMPLE
     
+    def classify_from_understanding(self, query_understanding: Dict[str, Any]) -> QueryComplexity:
+        """
+        Classify complexity using query understanding data.
+        More accurate than prompt-based estimation.
+        
+        Args:
+            query_understanding: Query understanding output
+        
+        Returns:
+            QueryComplexity level
+        """
+        from app.services.complexity_classifier import complexity_classifier
+        return complexity_classifier.classify_from_understanding(query_understanding)
+    
     async def generate_completion(
         self,
         prompt: str,
@@ -160,6 +176,27 @@ class LLMService:
             if not content:
                 logger.warning(f"Empty response from LLM model {selected_model}")
                 raise ValueError("LLM returned empty response")
+            
+            # Track token usage
+            try:
+                # Try to get actual token counts from response
+                input_tokens = getattr(response.usage, 'prompt_tokens', None) or 0
+                output_tokens = getattr(response.usage, 'completion_tokens', None) or 0
+                
+                if input_tokens == 0 or output_tokens == 0:
+                    # Fallback to estimation if not available
+                    from app.services.complexity_classifier import complexity_classifier
+                    input_tokens = complexity_classifier.estimate_tokens(prompt)
+                    output_tokens = complexity_classifier.estimate_tokens(content)
+                
+                # Track usage (query_id will be set by orchestrator if available)
+                token_tracker.track_llm_call(
+                    model=selected_model,
+                    prompt=prompt,
+                    response=content
+                )
+            except Exception as e:
+                logger.warning(f"Failed to track token usage: {e}")
             
             return content
         except Exception as e:
