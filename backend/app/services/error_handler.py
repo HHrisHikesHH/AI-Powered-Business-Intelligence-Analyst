@@ -8,6 +8,7 @@ from loguru import logger
 from datetime import datetime
 import json
 import traceback
+import re
 
 
 class ErrorCategory(str, Enum):
@@ -60,7 +61,8 @@ class ErrorHandler:
         Returns:
             Dictionary with error categorization and retry information
         """
-        error_str = str(error).lower()
+        raw_error_str = str(error)
+        error_str = raw_error_str.lower()
         error_type = type(error).__name__
         
         # Determine category
@@ -68,6 +70,7 @@ class ErrorHandler:
         severity = ErrorSeverity.MEDIUM
         retryable = False
         retry_strategy = None
+        user_message: Optional[str] = None
         
         # Syntax errors
         if any(keyword in error_str for keyword in ["syntax", "parse", "invalid sql", "malformed"]):
@@ -82,6 +85,19 @@ class ErrorHandler:
             severity = ErrorSeverity.MEDIUM
             retryable = True
             retry_strategy = RetryStrategy.AUGMENT_SCHEMA_CONTEXT
+            # Try to extract a missing column name for a clearer user-facing message
+            col_match = re.search(r'column \"([^\"]+)\" does not exist', error_str)
+            if col_match:
+                missing_col = col_match.group(1)
+                user_message = (
+                    f"The query references column '{missing_col}', which does not exist in the current "
+                    "database schema. This question cannot be answered given the available data."
+                )
+            else:
+                user_message = (
+                    "The query references a table or column that does not exist in the current database "
+                    "schema. This question cannot be answered given the available data."
+                )
         
         # Permission errors
         elif any(keyword in error_str for keyword in ["permission", "access denied", "unauthorized"]):
@@ -135,7 +151,9 @@ class ErrorHandler:
             "category": category.value,
             "severity": severity.value,
             "error_type": error_type,
-            "error_message": str(error),
+            "error_message": raw_error_str,
+            # Prefer a simplified, user-friendly message when available
+            "user_message": user_message or raw_error_str,
             "retryable": retryable,
             "retry_strategy": retry_strategy.value if retry_strategy else None,
             "context": context or {},
