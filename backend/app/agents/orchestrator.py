@@ -65,7 +65,16 @@ class Orchestrator:
         # Define edges
         workflow.set_entry_point("understand")
         workflow.add_edge("understand", "generate")
-        workflow.add_edge("generate", "validate")
+        
+        # Generate can lead to validate or error (if schema limitation)
+        workflow.add_conditional_edges(
+            "generate",
+            self._should_validate_or_error,
+            {
+                "validate": "validate",
+                "error": END
+            }
+        )
         
         # Validation can lead to execute, retry, or error
         workflow.add_conditional_edges(
@@ -144,16 +153,58 @@ class Orchestrator:
             logger.info(f"SQL generated: {sql}")
             return state
             
+        except ValueError as e:
+            # Schema limitation errors (from grounding)
+            error_msg = str(e)
+            if ("does not exist" in error_msg.lower() or 
+                "available tables" in error_msg.lower() or 
+                "no valid tables" in error_msg.lower() or
+                "cannot generate sql" in error_msg.lower()):
+                logger.warning(f"Schema limitation in SQL generation: {error_msg}")
+                error_info = error_handler.categorize_error(
+                    e,
+                    context={
+                        "step": "generation",
+                        "query": query,
+                        "query_understanding": understanding
+                    }
+                )
+                state["error"] = error_msg  # Preserve the detailed error message
+                state["error_category"] = error_info["category"]
+                state["step"] = "error"
+                # Ensure generated_sql is empty for schema errors
+                state["generated_sql"] = ""
+            else:
+                state["error"] = f"SQL generation failed: {error_msg}"
+                state["step"] = "error"
+                state["generated_sql"] = ""
+            return state
         except Exception as e:
             logger.error(f"Error in generate node: {e}")
+            error_info = error_handler.categorize_error(e, context={"step": "generation", "query": query})
             state["error"] = f"SQL generation failed: {str(e)}"
+            state["error_category"] = error_info["category"]
             state["step"] = "error"
             return state
     
     async def _validate_node(self, state: AgentState) -> AgentState:
         """SQL Validation node."""
         try:
-            sql = state["generated_sql"]
+            sql = state.get("generated_sql", "")
+            
+            # If SQL is empty and there's already an error, preserve that error
+            if not sql and state.get("error"):
+                state["validation_result"] = (False, state["error"])
+                state["step"] = "validate"
+                return state
+            
+            # If SQL is empty without error, that's a problem
+            if not sql:
+                state["validation_result"] = (False, "No SQL was generated")
+                state["error"] = "No SQL was generated"
+                state["error_category"] = ErrorCategory.LLM_ERROR.value
+                state["step"] = "validate"
+                return state
             
             is_valid, error = await self.sql_validator.validate(sql)
             
@@ -170,7 +221,8 @@ class Orchestrator:
                         "query": state.get("natural_language_query", "")
                     }
                 )
-                state["error"] = f"SQL validation failed: {error}"
+                # Preserve the detailed error message from validator (includes available columns)
+                state["error"] = error if error else f"SQL validation failed"
                 state["error_category"] = error_info["category"]
             else:
                 logger.info("SQL validation passed")
@@ -470,24 +522,67 @@ class Orchestrator:
             state["step"] = "error"
             return state
     
+    def _should_validate_or_error(self, state: AgentState) -> Literal["validate", "error"]:
+        """
+        Check if we should proceed to validation or stop with error after SQL generation.
+        
+        Returns:
+            "validate" if SQL was generated successfully
+            "error" if there was a schema limitation or critical error
+        """
+        error = state.get("error", "")
+        error_category = state.get("error_category", "")
+        step = state.get("step", "")
+        
+        # If generate node set step to "error", it's a schema limitation - stop immediately
+        if step == "error":
+            # Check if it's a schema error (non-retryable)
+            if error_category == ErrorCategory.SCHEMA_ERROR.value:
+                if "does not exist" in error.lower() or "available tables" in error.lower() or "no valid tables" in error.lower():
+                    logger.info("Schema limitation detected - stopping workflow")
+                    return "error"
+            # For other errors in generation, still try validation (might be empty SQL)
+            # But if there's no SQL at all, it's an error
+            if not state.get("generated_sql"):
+                return "error"
+        
+        # If we have SQL (even if empty), proceed to validation
+        # Validation will handle empty SQL appropriately
+        return "validate"
+    
     def _should_retry_or_execute(self, state: AgentState) -> Literal["execute", "retry", "self_correct", "error"]:
         """Conditional edge function for validation result with retry logic."""
         validation_result = state.get("validation_result")
         retry_count = state.get("retry_count", 0)
         max_retries = state.get("max_retries", self.max_retries)
         error_category = state.get("error_category", "")
+        error_message = state.get("error", "")
         
         if validation_result and validation_result[0]:
             return "execute"
+        
+        # For schema errors about missing columns, return error immediately
+        # These can't be fixed by self-correction since the column doesn't exist
+        if error_category == ErrorCategory.SCHEMA_ERROR.value:
+            if "does not exist" in error_message.lower() or "column" in error_message.lower():
+                # Schema limitation - can't be fixed, return user-friendly error
+                return "error"
         
         # Check if we should retry
         if retry_count >= max_retries:
             return "error"
         
         # Determine retry strategy based on error category
-        if error_category in [ErrorCategory.SYNTAX_ERROR.value, ErrorCategory.SCHEMA_ERROR.value]:
-            # Use self-correction for syntax and schema errors
+        if error_category == ErrorCategory.SYNTAX_ERROR.value:
+            # Use self-correction for syntax errors (might be fixable)
             return "self_correct"
+        elif error_category == ErrorCategory.SCHEMA_ERROR.value:
+            # For other schema errors (not missing columns), try self-correction once
+            if retry_count == 0:
+                return "self_correct"
+            else:
+                # Already tried, return error
+                return "error"
         elif error_category in [ErrorCategory.LLM_ERROR.value, ErrorCategory.NETWORK_ERROR.value]:
             # Use retry with backoff for LLM/network errors
             return "retry"
@@ -642,7 +737,17 @@ class Orchestrator:
         # SQL generation with retry loop
         for attempt in range(max_retries + 1):
             state = await self._generate_node(state)
+            
+            # Check if generation failed with schema error (non-retryable)
             if state.get("step") == "error":
+                error_category = state.get("error_category", "")
+                error = state.get("error", "")
+                # Schema errors about missing tables should stop immediately
+                if error_category == ErrorCategory.SCHEMA_ERROR.value:
+                    if "does not exist" in error.lower() or "available tables" in error.lower() or "no valid tables" in error.lower():
+                        logger.info("Schema limitation detected in manual workflow - stopping")
+                        return state
+                # For other errors, break and return
                 break
             
             state = await self._validate_node(state)
