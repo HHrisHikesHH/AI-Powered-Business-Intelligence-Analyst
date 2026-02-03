@@ -1,6 +1,6 @@
 """
 Query executor service.
-Handles SQL execution with timeouts and row limits (Week 2).
+Handles SQL execution with timeouts and row limits.
 """
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
