@@ -5,6 +5,8 @@ import pytest
 from app.agents.query_understanding import QueryUnderstandingAgent
 from app.agents.sql_generation import SQLGenerationAgent
 from app.agents.sql_validator import SQLValidator
+from app.agents.analysis import AnalysisAgent
+from app.agents.visualization import VisualizationAgent
 from unittest.mock import AsyncMock, MagicMock, patch
 
 
@@ -121,4 +123,152 @@ async def test_sql_validator_schema_check():
     is_valid, error = await validator._validate_schema("SELECT * FROM nonexistent;")
     assert is_valid is False
     assert "does not exist" in error
+
+
+@pytest.mark.asyncio
+async def test_analysis_agent():
+    """Test Analysis Agent."""
+    agent = AnalysisAgent()
+    
+    query_understanding = {
+        "intent": "Count total number of customers",
+        "tables": ["customers"],
+        "columns": ["id"],
+        "filters": [],
+        "aggregations": ["COUNT"],
+        "group_by": [],
+        "order_by": None
+    }
+    
+    results = [{"customer_count": 20}]
+    
+    # Mock LLM response
+    with patch.object(agent.llm, 'generate_completion', new_callable=AsyncMock) as mock_llm:
+        mock_llm.return_value = '''{
+            "insights": ["Total customer count is 20"],
+            "trends": [],
+            "anomalies": [],
+            "recommendations": ["Monitor customer growth"],
+            "summary": "The query returned a customer count of 20."
+        }'''
+        
+        analysis = await agent.analyze_results(
+            query_understanding=query_understanding,
+            natural_language_query="How many customers do we have?",
+            sql="SELECT COUNT(*) as customer_count FROM customers;",
+            results=results
+        )
+        
+        assert "insights" in analysis
+        assert len(analysis["insights"]) > 0
+        assert "summary" in analysis
+        assert "recommendations" in analysis
+
+
+@pytest.mark.asyncio
+async def test_analysis_agent_empty_results():
+    """Test Analysis Agent with empty results."""
+    agent = AnalysisAgent()
+    
+    query_understanding = {
+        "intent": "Find customers",
+        "tables": ["customers"],
+        "columns": [],
+        "filters": [],
+        "aggregations": [],
+        "group_by": [],
+        "order_by": None
+    }
+    
+    analysis = await agent.analyze_results(
+        query_understanding=query_understanding,
+        natural_language_query="Show me customers",
+        sql="SELECT * FROM customers WHERE id = 999;",
+        results=[]
+    )
+    
+    assert "insights" in analysis
+    assert "anomalies" in analysis
+    assert len(analysis["anomalies"]) > 0
+    assert "No results found" in analysis["insights"][0] or "zero results" in analysis["summary"].lower()
+
+
+@pytest.mark.asyncio
+async def test_visualization_agent():
+    """Test Visualization Agent."""
+    agent = VisualizationAgent()
+    
+    query_understanding = {
+        "intent": "Show products by category",
+        "tables": ["products"],
+        "columns": ["category", "count"],
+        "filters": [],
+        "aggregations": ["COUNT"],
+        "group_by": ["category"],
+        "order_by": None
+    }
+    
+    results = [
+        {"category": "Electronics", "product_count": 10},
+        {"category": "Clothing", "product_count": 5}
+    ]
+    
+    # Mock LLM response
+    with patch.object(agent.llm, 'generate_completion', new_callable=AsyncMock) as mock_llm:
+        mock_llm.return_value = '''{
+            "chart_type": "bar",
+            "data_key": "product_count",
+            "category_key": "category",
+            "title": "Products by Category",
+            "description": "Bar chart showing product count by category",
+            "x_axis_label": "Category",
+            "y_axis_label": "Product Count",
+            "colors": ["#8884d8", "#82ca9d"],
+            "config": {
+                "width": 800,
+                "height": 400,
+                "margin": {"top": 20, "right": 30, "left": 20, "bottom": 5}
+            }
+        }'''
+        
+        visualization = await agent.generate_visualization(
+            query_understanding=query_understanding,
+            natural_language_query="Show me products by category",
+            sql="SELECT category, COUNT(*) as product_count FROM products GROUP BY category;",
+            results=results
+        )
+        
+        assert "chart_type" in visualization
+        assert "data_key" in visualization
+        assert "category_key" in visualization
+        assert "recharts_component" in visualization
+        assert visualization["chart_type"] == "bar"
+        assert visualization["recharts_component"] == "BarChart"
+
+
+@pytest.mark.asyncio
+async def test_visualization_agent_empty_results():
+    """Test Visualization Agent with empty results."""
+    agent = VisualizationAgent()
+    
+    query_understanding = {
+        "intent": "Show products",
+        "tables": ["products"],
+        "columns": [],
+        "filters": [],
+        "aggregations": [],
+        "group_by": [],
+        "order_by": None
+    }
+    
+    visualization = await agent.generate_visualization(
+        query_understanding=query_understanding,
+        natural_language_query="Show me products",
+        sql="SELECT * FROM products WHERE id = 999;",
+        results=[]
+    )
+    
+    assert "chart_type" in visualization
+    assert "title" in visualization
+    assert "No Data Available" in visualization["title"] or "unavailable" in visualization["title"].lower()
 

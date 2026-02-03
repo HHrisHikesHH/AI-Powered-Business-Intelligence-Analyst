@@ -26,7 +26,9 @@ async def test_orchestrator_simple_query():
         
         # Mock agents
         with patch.object(orchestrator.query_understanding_agent, 'understand', new_callable=AsyncMock) as mock_understand, \
-             patch.object(orchestrator.sql_generation_agent, 'generate_sql', new_callable=AsyncMock) as mock_generate:
+             patch.object(orchestrator.sql_generation_agent, 'generate_sql', new_callable=AsyncMock) as mock_generate, \
+             patch.object(orchestrator.analysis_agent, 'analyze_results', new_callable=AsyncMock) as mock_analyze, \
+             patch.object(orchestrator.visualization_agent, 'generate_visualization', new_callable=AsyncMock) as mock_visualize:
             
             mock_understand.return_value = {
                 "intent": "Count customers",
@@ -42,6 +44,20 @@ async def test_orchestrator_simple_query():
             }
             
             mock_generate.return_value = "SELECT COUNT(*) as count FROM customers;"
+            mock_analyze.return_value = {
+                "insights": ["Total customer count is 20"],
+                "trends": [],
+                "anomalies": [],
+                "recommendations": [],
+                "summary": "Analysis complete"
+            }
+            mock_visualize.return_value = {
+                "chart_type": "bar",
+                "recharts_component": "BarChart",
+                "data_key": "count",
+                "title": "Customer Count",
+                "config": {"width": 800, "height": 400}
+            }
             
             result = await orchestrator.process_query("How many customers do we have?")
             
@@ -49,4 +65,8 @@ async def test_orchestrator_simple_query():
             assert result["validation_passed"] is True
             assert len(result["results"]) == 1
             assert result["results"][0]["count"] == 20
+            assert result["analysis"] is not None
+            assert "insights" in result["analysis"]
+            assert result["visualization"] is not None
+            assert "chart_type" in result["visualization"]
 
