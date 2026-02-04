@@ -2,7 +2,7 @@
 
 An intelligent multi-agent system that enables non-technical users to query databases using natural language, receiving actionable insights, visualizations, and recommendations.
 
-## Phase 1, Week 1: Core Infrastructure
+## Core Infrastructure
 
 This implementation provides the complete backend infrastructure setup as specified in the technical specification document.
 
