@@ -8,108 +8,181 @@ This implementation provides the complete backend infrastructure setup as specif
 
 ## Architecture Overview
 
-The system uses a containerized microservices architecture:
+The system is built as a container-friendly, multi-agent analytics backend:
 
-- **PostgreSQL**: Database for storing e-commerce data
-- **Redis**: Caching layer and Celery message broker
-- **ChromaDB**: Vector store for schema embeddings and RAG
-- **FastAPI**: Async Python web framework for API endpoints
-- **Celery**: Distributed task queue for async operations
-- **Groq API**: Multiple LLM models with intelligent routing (Llama 3.1, Llama 3.3, GPT-OSS, Qwen, etc.)
+- **FastAPI backend** (`backend/app/main.py`): Async API surface for NL queries and admin operations
+- **Multi-agent pipeline** (`backend/app/agents/*`): Orchestrated NL → SQL → Execution → Analysis → Visualization flow
+- **PostgreSQL + pgvector**: Primary OLAP-style database with enterprise schema and vector embeddings
+- **Redis**: Caching layer and Celery broker (query understanding cache, schema embeddings, etc.)
+- **Celery worker**: Background tasks (embedding generation, heavy jobs)
+- **Groq LLM API**: Multiple models with complexity-based routing (simple/medium/complex)
+- **Prometheus + Grafana**: Metrics collection and dashboards for latency, errors, and throughput
+- **Optional frontend** (`frontend/`): React + Tailwind UI for query console, history, and admin dashboard
 
 ## Project Structure
 
+High-level layout (see `ARCHITECTURE.md`, `DATA_FLOW.md`, and `backend/TESTING_PLAN.md` for deep dives):
+
 ```
 .
-├── docker-compose.yml          # Docker Compose configuration
-├── Makefile                    # Convenience commands
-├── README.md                   # This file
-├── .gitignore                  # Git ignore rules
-└── backend/
-    ├── Dockerfile              # Backend container definition
-    ├── requirements.txt        # Python dependencies
-    ├── .env.example           # Environment variables template
-    ├── app/
-    │   ├── __init__.py
-    │   ├── main.py            # FastAPI application entry point
-    │   ├── celery_app.py      # Celery configuration
-    │   ├── core/              # Core configuration and utilities
-    │   │   ├── __init__.py
-    │   │   ├── config.py      # Application settings
-    │   │   ├── database.py    # PostgreSQL connection
-    │   │   ├── redis_client.py # Redis caching
-    │   │   ├── chromadb_client.py # ChromaDB vector store
-    │   │   └── llm_client.py  # Groq/Llama 3 client
-    │   ├── api/               # API routes
-    │   │   └── v1/
-    │   │       ├── router.py
-    │   │       └── endpoints/
-    │   │           └── queries.py # Query endpoints
-    │   ├── services/          # Business logic
-    │   │   └── query_executor.py # Query execution service
-    │   └── tasks/             # Celery tasks
-    │       └── embedding_tasks.py
-    └── database/
-        ├── init.sql           # Database schema
-        └── seed_data.sql      # Sample e-commerce data
+├── docker-compose.yml           # Redis, backend, Celery, Prometheus, Grafana
+├── Makefile                     # Convenience commands
+├── QUICKSTART.md                # 5‑minute Docker quick start
+├── START_SERVICES.md            # Local backend + services guide
+├── ARCHITECTURE.md              # Detailed multi-agent + RAG architecture
+├── DATA_FLOW.md                 # End‑to‑end data and control flow
+├── README.md                    # This file (high‑level overview)
+├── backend/
+│   ├── Dockerfile               # Backend container definition
+│   ├── requirements.txt         # Python dependencies
+│   ├── app/
+│   │   ├── main.py              # FastAPI app entrypoint
+│   │   ├── celery_app.py        # Celery configuration
+│   │   ├── agents/              # Multi‑agent NL→SQL pipeline
+│   │   │   ├── orchestrator.py        # LangGraph-based orchestrator
+│   │   │   ├── query_understanding.py # Query understanding agent
+│   │   │   ├── sql_generation.py      # SQL generation agent (with RAG)
+│   │   │   ├── sql_validator.py       # SQL safety and schema validation
+│   │   │   ├── analysis.py            # Result analysis agent
+│   │   │   └── visualization.py       # Chart / config generation
+│   │   ├── core/                # Core infra modules
+│   │   │   ├── config.py              # Settings (DB, Redis, LLM, etc.)
+│   │   │   ├── database_adapter.py    # Multi‑DB adapter (Postgres, MySQL, SQLite)
+│   │   │   ├── database.py            # Session factory + dependency helpers
+│   │   │   ├── redis_client.py        # Async Redis cache client
+│   │   │   ├── pgvector_client.py     # Vector store client (pgvector)
+│   │   │   └── llm_client.py          # Groq client + complexity routing
+│   │   ├── services/            # Supporting services
+│   │   │   ├── hybrid_rag.py          # Hybrid RAG (vector + keyword + graph)
+│   │   │   ├── schema_introspection.py# Schema discovery + embeddings
+│   │   │   ├── query_executor.py      # Safe SQL execution with timeouts
+│   │   │   ├── error_handler.py       # Error categorization / retries
+│   │   │   └── metrics.py             # Prometheus metric helpers
+│   │   └── api/                 # Versioned API routes
+│   │       └── v1/
+│   │           ├── router.py
+│   │           └── endpoints/
+│   │               └── queries.py     # Primary NL query endpoint
+│   ├── database/
+│   │   ├── enterprise_schema.sql      # 40+ table enterprise schema
+│   │   ├── enterprise_seed_data*.sql  # Comprehensive seed data
+│   │   ├── DATABASE_MIGRATION_GUIDE.md
+│   │   └── README.md                  # Schema documentation and quick start
+│   ├── tests/                   # Comprehensive test suite (see TESTING_PLAN.md)
+│   │   ├── test_database_adapter.py
+│   │   ├── test_query_understanding.py
+│   │   ├── test_sql_generation.py
+│   │   ├── test_sql_validator.py
+│   │   ├── test_analysis_agent.py
+│   │   ├── test_visualization_agent.py
+│   │   ├── test_orchestrator.py
+│   │   ├── test_hybrid_rag.py
+│   │   ├── test_enterprise_schema.py
+│   │   ├── test_benchmark.py          # 500‑query benchmark harness (sampled)
+│   │   ├── test_performance.py
+│   │   ├── test_concurrency.py
+│   │   ├── test_cost_optimization.py
+│   │   ├── test_error_handling.py
+│   │   └── test_security.py
+│   └── scripts/
+│       ├── setup_database.py          # Local DB bootstrap helpers
+│       └── generate_benchmark_queries.py
+├── frontend/                    # React + Vite + Tailwind frontend (query UI)
+└── monitoring/
+    └── prometheus.yml          # Prometheus scrape config for backend metrics
 ```
 
-## Key Files Explained
+## Key Components & Flows
 
-### `docker-compose.yml`
-Orchestrates all services with proper health checks and dependencies. Services include:
-- PostgreSQL with persistent volume
-- Redis with persistence
-- ChromaDB for vector storage
-- FastAPI backend
-- Celery worker
+### Multi‑Agent NL→SQL Pipeline
 
-### `backend/app/main.py`
-FastAPI application with:
-- CORS middleware
-- Health check endpoints
-- API router integration
-- Startup/shutdown event handlers
+The core intelligence lives in `backend/app/agents/` and is orchestrated by `orchestrator.py`:
 
-### `backend/app/core/config.py`
-Pydantic-based configuration management that loads environment variables and provides typed settings.
+1. **Query Understanding Agent** (`query_understanding.py`)
+   - Parses natural language into a structured representation:
+     - intent, tables, columns, filters, aggregations, group_by, order_by, limit
+   - Uses Groq LLMs with a **non‑hallucinating prompt** and examples
+   - Caches understandings in Redis for common queries
 
-### `backend/app/core/database.py`
-SQLAlchemy async engine setup for PostgreSQL with connection pooling.
+2. **SQL Generation Agent** (`sql_generation.py`)
+   - Grounds the understanding against the **actual enterprise schema** (via `schema_introspection.py` + pgvector)
+   - Uses **Hybrid RAG** (`hybrid_rag.py`): vector + keyword + graph relationships
+   - Generates safe PostgreSQL SQL with:
+     - Anti‑hallucination rules (only use tables/columns that exist)
+     - Retry + self‑correction when validation fails
 
-### `backend/app/core/redis_client.py`
-Redis client with async operations and caching service for query results and schema data.
+3. **SQL Validator** (`sql_validator.py`)
+   - Blocks dangerous operations (DROP/DELETE/UPDATE/ALTER/etc.)
+   - Ensures only `SELECT` queries run
+   - Validates tables/columns against the schema cache
 
-### `backend/app/core/chromadb_client.py`
-ChromaDB integration with sentence-transformers for embeddings. Provides vector store operations for RAG.
+4. **Query Executor** (`services/query_executor.py`)
+   - Runs SQL safely with:
+     - Timeouts
+     - Row limits
+     - JSON‑friendly result shaping (dates, decimals, etc.)
 
-### `backend/app/core/llm_client.py`
-Groq API client with support for multiple models. Features:
-- Intelligent model routing based on query complexity
-- Support for all Groq production and preview models
-- Automatic model selection (simple → medium → complex)
-- Manual model override capability
-- Cost optimization through smart routing
+5. **Analysis Agent** (`analysis.py`)
+   - Interprets result sets and generates:
+     - insights, trends, anomalies, recommendations, summary
+   - Uses LLM with a JSON‑only protocol and robust fallback behavior
 
-### `backend/app/services/query_executor.py`
-Simplified query execution service (Week 1 implementation):
-- Natural language to SQL conversion using LLM
-- SQL execution with safety checks
-- Result formatting
+6. **Visualization Agent** (`visualization.py`)
+   - Chooses appropriate chart types (bar/line/area/pie/number card/etc.)
+   - Outputs a Recharts‑friendly config used by the frontend
 
-### `backend/database/init.sql`
-Creates the e-commerce schema:
-- `customers`: Customer information
-- `products`: Product catalog
-- `orders`: Order records
-- `order_items`: Order line items
+End‑to‑end, this is wired together by the **LangGraph‑based orchestrator** (`orchestrator.py`), which:
 
-### `backend/database/seed_data.sql`
-Populates database with realistic sample data:
-- 20 customers
-- 20 products across multiple categories
-- 26 orders with various statuses
-- Associated order items
+- Manages step transitions (understand → generate → validate → execute → analyze/visualize)
+- Applies retry logic and self‑correction
+- Tracks metrics and error categories for observability
+
+### Core Infra Modules
+
+- **`backend/app/core/config.py`** – Typed settings for DB, Redis, LLMs, feature flags.
+- **`backend/app/core/database_adapter.py`** – Factory for Postgres/MySQL/SQLite adapters.
+- **`backend/app/core/database.py`** – Async session factory + FastAPI `get_db` dependency.
+- **`backend/app/core/pgvector_client.py`** – Vector store client for schema/context embeddings.
+- **`backend/app/core/redis_client.py`** – Redis connection and simple cache wrapper.
+- **`backend/app/core/llm_client.py`** – Groq client with complexity classifier and model routing.
+
+### Enterprise Schema
+
+- **`backend/database/enterprise_schema.sql`** – 40+ table schema covering:
+  - HR, Finance, Sales/CRM, Inventory, Projects, Support, Marketing
+- **`backend/database/enterprise_seed_data*.sql`** – Comprehensive seed data for realistic queries.
+- See `backend/database/README.md` for a full breakdown and quick start.
+
+### Testing & Benchmarking
+
+- **`backend/TESTING_PLAN.md`** – Master testing strategy (unit, integration, performance, security).
+- **Key test files** (`backend/tests/`):
+  - `test_database_adapter.py` – Multi‑DB adapter & schema introspection.
+  - `test_query_understanding.py`, `test_sql_generation.py`, `test_sql_validator.py` – Agent‑level behavior.
+  - `test_analysis_agent.py`, `test_visualization_agent.py` – Insights & visualization configs.
+  - `test_orchestrator.py` – End‑to‑end orchestration paths and error handling.
+  - `test_enterprise_schema.py` – Cross‑module enterprise queries (HR/Finance/Sales/etc.).
+  - `test_benchmark.py` – 500‑query benchmark harness:
+    - Deterministically samples **5 queries per category** for speed.
+    - Prints **per‑query status** (ID, category, SQL accuracy, execution status) as it runs.
+  - `test_performance.py`, `test_concurrency.py`, `test_cost_optimization.py` – Latency, load, and cost routing.
+  - `test_error_handling.py`, `test_security.py` – Safety, injection protection, and hardening.
+
+To run the full suite:
+
+```bash
+cd backend
+source venv/bin/activate
+pytest -v
+```
+
+To run the sampled benchmark with per‑query feedback:
+
+```bash
+cd backend
+source venv/bin/activate
+pytest tests/test_benchmark.py -v -s
+```
 
 ## Setup Instructions
 
