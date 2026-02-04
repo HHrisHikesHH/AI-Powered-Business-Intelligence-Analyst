@@ -6,67 +6,7 @@ This document explains the key components and architecture of the AI-Powered Bus
 
 ## System Architecture
 
-```plantuml
-@startuml
-actor User
-actor "Admin" as Admin
-
-rectangle "Frontend (React + Shadcn/UI)" {
-  User --> (Query UI)
-  Admin --> (Admin Dashboard)
-}
-
-rectangle "Backend (FastAPI)" {
-  (Query API) --> (Orchestrator)
-  (Admin API) --> (Metrics Service)
-  (Metrics Endpoint)
-}
-
-rectangle "Agents & Services" {
-  (Query Understanding Agent)
-  (SQL Generation Agent)
-  (SQL Validator)
-  (Analysis Agent)
-  (Visualization Agent)
-  (Token Tracker)
-  (Error Handler)
-  (Metrics Service)
-}
-
-rectangle "Data Layer" {
-  (PostgreSQL + pgvector)
-  (Redis Cache)
-}
-
-rectangle "Observability" {
-  (Prometheus)
-  (Grafana)
-}
-
-User -> (Query UI)
-(Query UI) --> (Query API): POST /api/v1/queries
-(Query API) --> (Orchestrator)
-(Orchestrator) --> (Query Understanding Agent)
-(Orchestrator) --> (SQL Generation Agent)
-(Orchestrator) --> (SQL Validator)
-(Orchestrator) --> (Analysis Agent)
-(Orchestrator) --> (Visualization Agent)
-(Orchestrator) --> (Token Tracker)
-(Orchestrator) --> (Error Handler)
-(Orchestrator) --> (Metrics Service)
-(Orchestrator) --> (PostgreSQL + pgvector)
-(Orchestrator) --> (Redis Cache)
-
-Admin --> (Admin Dashboard)
-(Admin Dashboard) --> (Admin API): GET /api/v1/admin/metrics
-(Admin API) --> (Metrics Service)
-(Metrics Service) --> (Redis Cache)
-
-(Prometheus) --> (Metrics Endpoint): scrape /metrics
-(Grafana) --> (Prometheus): visualise
-
-@enduml
-```
+![System Architecture](assets/architecture.svg)
 
 ## Directory Structure
 
