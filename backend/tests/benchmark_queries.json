@@ -1,0 +1,3502 @@
+[
+    {
+        "id": 1,
+        "natural_language": "How many customers do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM customers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 2,
+        "natural_language": "List all employees",
+        "expected_sql": "SELECT * FROM employees LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 3,
+        "natural_language": "Show me products",
+        "expected_sql": "SELECT * FROM products",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 4,
+        "natural_language": "Count departments",
+        "expected_sql": "SELECT COUNT(*) FROM departments",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 5,
+        "natural_language": "Total number of invoices",
+        "expected_sql": "SELECT COUNT(*) FROM invoices",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 6,
+        "natural_language": "How many sales_orders do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM sales_orders",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 7,
+        "natural_language": "List all leads",
+        "expected_sql": "SELECT * FROM leads LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 8,
+        "natural_language": "Show me opportunities",
+        "expected_sql": "SELECT * FROM opportunities",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 9,
+        "natural_language": "Count projects",
+        "expected_sql": "SELECT COUNT(*) FROM projects",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 10,
+        "natural_language": "Total number of support_tickets",
+        "expected_sql": "SELECT COUNT(*) FROM support_tickets",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 11,
+        "natural_language": "How many suppliers do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM suppliers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 12,
+        "natural_language": "List all warehouses",
+        "expected_sql": "SELECT * FROM warehouses LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 13,
+        "natural_language": "Show me marketing_campaigns",
+        "expected_sql": "SELECT * FROM marketing_campaigns",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 14,
+        "natural_language": "Count events",
+        "expected_sql": "SELECT COUNT(*) FROM events",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 15,
+        "natural_language": "Total number of customers",
+        "expected_sql": "SELECT COUNT(*) FROM customers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 16,
+        "natural_language": "How many employees do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM employees",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 17,
+        "natural_language": "List all products",
+        "expected_sql": "SELECT * FROM products LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 18,
+        "natural_language": "Show me departments",
+        "expected_sql": "SELECT * FROM departments",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 19,
+        "natural_language": "Count invoices",
+        "expected_sql": "SELECT COUNT(*) FROM invoices",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 20,
+        "natural_language": "Total number of sales_orders",
+        "expected_sql": "SELECT COUNT(*) FROM sales_orders",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 21,
+        "natural_language": "How many leads do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM leads",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 22,
+        "natural_language": "List all opportunities",
+        "expected_sql": "SELECT * FROM opportunities LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 23,
+        "natural_language": "Show me projects",
+        "expected_sql": "SELECT * FROM projects",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 24,
+        "natural_language": "Count support_tickets",
+        "expected_sql": "SELECT COUNT(*) FROM support_tickets",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 25,
+        "natural_language": "Total number of suppliers",
+        "expected_sql": "SELECT COUNT(*) FROM suppliers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 26,
+        "natural_language": "How many warehouses do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM warehouses",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 27,
+        "natural_language": "List all marketing_campaigns",
+        "expected_sql": "SELECT * FROM marketing_campaigns LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 28,
+        "natural_language": "Show me events",
+        "expected_sql": "SELECT * FROM events",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 29,
+        "natural_language": "Count customers",
+        "expected_sql": "SELECT COUNT(*) FROM customers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 30,
+        "natural_language": "Total number of employees",
+        "expected_sql": "SELECT COUNT(*) FROM employees",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 31,
+        "natural_language": "How many products do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM products",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 32,
+        "natural_language": "List all departments",
+        "expected_sql": "SELECT * FROM departments LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 33,
+        "natural_language": "Show me invoices",
+        "expected_sql": "SELECT * FROM invoices",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 34,
+        "natural_language": "Count sales_orders",
+        "expected_sql": "SELECT COUNT(*) FROM sales_orders",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 35,
+        "natural_language": "Total number of leads",
+        "expected_sql": "SELECT COUNT(*) FROM leads",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 36,
+        "natural_language": "How many opportunities do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM opportunities",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 37,
+        "natural_language": "List all projects",
+        "expected_sql": "SELECT * FROM projects LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 38,
+        "natural_language": "Show me support_tickets",
+        "expected_sql": "SELECT * FROM support_tickets",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 39,
+        "natural_language": "Count suppliers",
+        "expected_sql": "SELECT COUNT(*) FROM suppliers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 40,
+        "natural_language": "Total number of warehouses",
+        "expected_sql": "SELECT COUNT(*) FROM warehouses",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 41,
+        "natural_language": "How many marketing_campaigns do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM marketing_campaigns",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 42,
+        "natural_language": "List all events",
+        "expected_sql": "SELECT * FROM events LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 43,
+        "natural_language": "Show me customers",
+        "expected_sql": "SELECT * FROM customers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 44,
+        "natural_language": "Count employees",
+        "expected_sql": "SELECT COUNT(*) FROM employees",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 45,
+        "natural_language": "Total number of products",
+        "expected_sql": "SELECT COUNT(*) FROM products",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 46,
+        "natural_language": "How many departments do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM departments",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 47,
+        "natural_language": "List all invoices",
+        "expected_sql": "SELECT * FROM invoices LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 48,
+        "natural_language": "Show me sales_orders",
+        "expected_sql": "SELECT * FROM sales_orders",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 49,
+        "natural_language": "Count leads",
+        "expected_sql": "SELECT COUNT(*) FROM leads",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 50,
+        "natural_language": "Total number of opportunities",
+        "expected_sql": "SELECT COUNT(*) FROM opportunities",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 51,
+        "natural_language": "How many projects do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM projects",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 52,
+        "natural_language": "List all support_tickets",
+        "expected_sql": "SELECT * FROM support_tickets LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 53,
+        "natural_language": "Show me suppliers",
+        "expected_sql": "SELECT * FROM suppliers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 54,
+        "natural_language": "Count warehouses",
+        "expected_sql": "SELECT COUNT(*) FROM warehouses",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 55,
+        "natural_language": "Total number of marketing_campaigns",
+        "expected_sql": "SELECT COUNT(*) FROM marketing_campaigns",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 56,
+        "natural_language": "How many events do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM events",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 57,
+        "natural_language": "List all customers",
+        "expected_sql": "SELECT * FROM customers LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 58,
+        "natural_language": "Show me employees",
+        "expected_sql": "SELECT * FROM employees",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 59,
+        "natural_language": "Count products",
+        "expected_sql": "SELECT COUNT(*) FROM products",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 60,
+        "natural_language": "Total number of departments",
+        "expected_sql": "SELECT COUNT(*) FROM departments",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 61,
+        "natural_language": "How many invoices do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM invoices",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 62,
+        "natural_language": "List all sales_orders",
+        "expected_sql": "SELECT * FROM sales_orders LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 63,
+        "natural_language": "Show me leads",
+        "expected_sql": "SELECT * FROM leads",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 64,
+        "natural_language": "Count opportunities",
+        "expected_sql": "SELECT COUNT(*) FROM opportunities",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 65,
+        "natural_language": "Total number of projects",
+        "expected_sql": "SELECT COUNT(*) FROM projects",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 66,
+        "natural_language": "How many support_tickets do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM support_tickets",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 67,
+        "natural_language": "List all suppliers",
+        "expected_sql": "SELECT * FROM suppliers LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 68,
+        "natural_language": "Show me warehouses",
+        "expected_sql": "SELECT * FROM warehouses",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 69,
+        "natural_language": "Count marketing_campaigns",
+        "expected_sql": "SELECT COUNT(*) FROM marketing_campaigns",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 70,
+        "natural_language": "Total number of events",
+        "expected_sql": "SELECT COUNT(*) FROM events",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 71,
+        "natural_language": "How many customers do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM customers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 72,
+        "natural_language": "List all employees",
+        "expected_sql": "SELECT * FROM employees LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 73,
+        "natural_language": "Show me products",
+        "expected_sql": "SELECT * FROM products",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 74,
+        "natural_language": "Count departments",
+        "expected_sql": "SELECT COUNT(*) FROM departments",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 75,
+        "natural_language": "Total number of invoices",
+        "expected_sql": "SELECT COUNT(*) FROM invoices",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 76,
+        "natural_language": "How many sales_orders do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM sales_orders",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 77,
+        "natural_language": "List all leads",
+        "expected_sql": "SELECT * FROM leads LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 78,
+        "natural_language": "Show me opportunities",
+        "expected_sql": "SELECT * FROM opportunities",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 79,
+        "natural_language": "Count projects",
+        "expected_sql": "SELECT COUNT(*) FROM projects",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 80,
+        "natural_language": "Total number of support_tickets",
+        "expected_sql": "SELECT COUNT(*) FROM support_tickets",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 81,
+        "natural_language": "How many suppliers do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM suppliers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 82,
+        "natural_language": "List all warehouses",
+        "expected_sql": "SELECT * FROM warehouses LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 83,
+        "natural_language": "Show me marketing_campaigns",
+        "expected_sql": "SELECT * FROM marketing_campaigns",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 84,
+        "natural_language": "Count events",
+        "expected_sql": "SELECT COUNT(*) FROM events",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 85,
+        "natural_language": "Total number of customers",
+        "expected_sql": "SELECT COUNT(*) FROM customers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 86,
+        "natural_language": "How many employees do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM employees",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 87,
+        "natural_language": "List all products",
+        "expected_sql": "SELECT * FROM products LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 88,
+        "natural_language": "Show me departments",
+        "expected_sql": "SELECT * FROM departments",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 89,
+        "natural_language": "Count invoices",
+        "expected_sql": "SELECT COUNT(*) FROM invoices",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 90,
+        "natural_language": "Total number of sales_orders",
+        "expected_sql": "SELECT COUNT(*) FROM sales_orders",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 91,
+        "natural_language": "How many leads do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM leads",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 92,
+        "natural_language": "List all opportunities",
+        "expected_sql": "SELECT * FROM opportunities LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 93,
+        "natural_language": "Show me projects",
+        "expected_sql": "SELECT * FROM projects",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 94,
+        "natural_language": "Count support_tickets",
+        "expected_sql": "SELECT COUNT(*) FROM support_tickets",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 95,
+        "natural_language": "Total number of suppliers",
+        "expected_sql": "SELECT COUNT(*) FROM suppliers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 96,
+        "natural_language": "How many warehouses do we have?",
+        "expected_sql": "SELECT COUNT(*) FROM warehouses",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 97,
+        "natural_language": "List all marketing_campaigns",
+        "expected_sql": "SELECT * FROM marketing_campaigns LIMIT 100",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 98,
+        "natural_language": "Show me events",
+        "expected_sql": "SELECT * FROM events",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 99,
+        "natural_language": "Count customers",
+        "expected_sql": "SELECT COUNT(*) FROM customers",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 100,
+        "natural_language": "Total number of employees",
+        "expected_sql": "SELECT COUNT(*) FROM employees",
+        "category": "simple",
+        "module": "general"
+    },
+    {
+        "id": 101,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 102,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 103,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 104,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 105,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 106,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 107,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 108,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 109,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 110,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 111,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 112,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 113,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 114,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 115,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 116,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 117,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 118,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 119,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 120,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 121,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 122,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 123,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 124,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 125,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 126,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 127,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 128,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 129,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 130,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 131,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 132,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 133,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 134,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 135,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 136,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 137,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 138,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 139,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 140,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 141,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 142,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 143,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 144,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 145,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 146,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 147,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 148,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 149,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 150,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 151,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 152,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 153,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 154,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 155,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 156,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 157,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 158,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 159,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 160,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 161,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 162,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 163,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 164,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 165,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 166,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 167,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 168,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 169,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 170,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 171,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 172,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 173,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 174,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 175,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 176,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 177,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 178,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 179,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 180,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 181,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 182,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 183,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 184,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 185,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 186,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 187,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 188,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 189,
+        "natural_language": "Invoices by status",
+        "expected_sql": "SELECT status, COUNT(*) as count, SUM(total_amount) as total FROM invoices GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 190,
+        "natural_language": "Payments by method",
+        "expected_sql": "SELECT payment_method, COUNT(*) as count, SUM(amount) as total FROM payments GROUP BY payment_method",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 191,
+        "natural_language": "Sales by customer",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_sales FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 192,
+        "natural_language": "Opportunities by stage",
+        "expected_sql": "SELECT stage, COUNT(*) as count, AVG(estimated_value) as avg_value FROM opportunities GROUP BY stage",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 193,
+        "natural_language": "Orders by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM sales_orders GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 194,
+        "natural_language": "Products by category",
+        "expected_sql": "SELECT pc.name as category, COUNT(p.id) as product_count FROM product_categories pc JOIN products p ON pc.id = p.category_id GROUP BY pc.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 195,
+        "natural_language": "Inventory by warehouse",
+        "expected_sql": "SELECT w.name, SUM(i.quantity_on_hand) as total_inventory FROM warehouses w JOIN inventory i ON w.id = i.warehouse_id GROUP BY w.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 196,
+        "natural_language": "Products below reorder point",
+        "expected_sql": "SELECT p.name, i.quantity_on_hand, i.reorder_point FROM products p JOIN inventory i ON p.id = i.product_id WHERE i.quantity_on_hand < i.reorder_point",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 197,
+        "natural_language": "Average salary by department",
+        "expected_sql": "SELECT d.name, AVG(e.salary) as avg_salary FROM departments d JOIN employees e ON d.id = e.position_id GROUP BY d.name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 198,
+        "natural_language": "Employee count by status",
+        "expected_sql": "SELECT status, COUNT(*) as count FROM employees GROUP BY status",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 199,
+        "natural_language": "Total hours worked by employee",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, SUM(a.total_hours) as total_hours FROM employees e JOIN attendance a ON e.id = a.employee_id GROUP BY e.id, e.first_name, e.last_name",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 200,
+        "natural_language": "Total revenue by month",
+        "expected_sql": "SELECT DATE_TRUNC('month', invoice_date) as month, SUM(total_amount) as revenue FROM invoices GROUP BY month ORDER BY month",
+        "category": "medium",
+        "module": "mixed"
+    },
+    {
+        "id": 201,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 202,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 203,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 204,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 205,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 206,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 207,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 208,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 209,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 210,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 211,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 212,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 213,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 214,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 215,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 216,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 217,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 218,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 219,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 220,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 221,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 222,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 223,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 224,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 225,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 226,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 227,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 228,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 229,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 230,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 231,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 232,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 233,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 234,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 235,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 236,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 237,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 238,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 239,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 240,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 241,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 242,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 243,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 244,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 245,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 246,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 247,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 248,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 249,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 250,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 251,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 252,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 253,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 254,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 255,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 256,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 257,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 258,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 259,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 260,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 261,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 262,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 263,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 264,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 265,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 266,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 267,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 268,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 269,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 270,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 271,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 272,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 273,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 274,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 275,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 276,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 277,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 278,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 279,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 280,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 281,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 282,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 283,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 284,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 285,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 286,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 287,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 288,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 289,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 290,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 291,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 292,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 293,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 294,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 295,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 296,
+        "natural_language": "Top 10 customers by total order value",
+        "expected_sql": "SELECT c.company_name, SUM(so.total_amount) as total_value FROM customers c JOIN sales_orders so ON c.id = so.customer_id GROUP BY c.company_name ORDER BY total_value DESC LIMIT 10",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 297,
+        "natural_language": "Employees with performance rating above 4.0",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, pr.overall_rating FROM employees e JOIN performance_reviews pr ON e.id = pr.employee_id WHERE pr.overall_rating > 4.0",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 298,
+        "natural_language": "Products with low inventory across all warehouses",
+        "expected_sql": "SELECT p.name, SUM(i.quantity_on_hand) as total_inventory FROM products p JOIN inventory i ON p.id = i.product_id GROUP BY p.name HAVING SUM(i.quantity_on_hand) < 50",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 299,
+        "natural_language": "Sales by month and customer type",
+        "expected_sql": "SELECT DATE_TRUNC('month', so.order_date) as month, c.customer_type, SUM(so.total_amount) as revenue FROM sales_orders so JOIN customers c ON so.customer_id = c.id GROUP BY month, c.customer_type ORDER BY month",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 300,
+        "natural_language": "Projects over budget",
+        "expected_sql": "SELECT p.name, p.budget, p.actual_cost, (p.actual_cost - p.budget) as over_budget FROM projects p WHERE p.actual_cost > p.budget",
+        "category": "complex",
+        "module": "cross_module"
+    },
+    {
+        "id": 301,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 302,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 303,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 304,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 305,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 306,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 307,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 308,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 309,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 310,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 311,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 312,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 313,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 314,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 315,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 316,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 317,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 318,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 319,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 320,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 321,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 322,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 323,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 324,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 325,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 326,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 327,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 328,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 329,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 330,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 331,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 332,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 333,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 334,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 335,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 336,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 337,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 338,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 339,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 340,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 341,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 342,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 343,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 344,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 345,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 346,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 347,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 348,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 349,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 350,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 351,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 352,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 353,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 354,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 355,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 356,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 357,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 358,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 359,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 360,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 361,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 362,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 363,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 364,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 365,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 366,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 367,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 368,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 369,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 370,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 371,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 372,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 373,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 374,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 375,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 376,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 377,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 378,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 379,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 380,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 381,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 382,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 383,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 384,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 385,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 386,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 387,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 388,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 389,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 390,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 391,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 392,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 393,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 394,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 395,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 396,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 397,
+        "natural_language": "Revenue by customer industry and sales rep department",
+        "expected_sql": "SELECT c.industry, d.name as department, SUM(so.total_amount) as revenue FROM customers c JOIN sales_orders so ON c.id = so.customer_id JOIN employees e ON so.sales_rep_id = e.id JOIN job_positions jp ON e.position_id = jp.id JOIN departments d ON jp.department_id = d.id GROUP BY c.industry, d.name",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 398,
+        "natural_language": "Employee performance vs project success",
+        "expected_sql": "SELECT e.first_name || ' ' || e.last_name as employee, AVG(pr.overall_rating) as avg_rating, COUNT(DISTINCT p.id) as project_count FROM employees e LEFT JOIN performance_reviews pr ON e.id = pr.employee_id LEFT JOIN projects p ON e.id = p.project_manager_id GROUP BY e.id, e.first_name, e.last_name HAVING COUNT(DISTINCT p.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 399,
+        "natural_language": "Support tickets by customer revenue tier",
+        "expected_sql": "SELECT CASE WHEN SUM(so.total_amount) > 100000 THEN 'High Value' WHEN SUM(so.total_amount) > 50000 THEN 'Medium Value' ELSE 'Low Value' END as revenue_tier, COUNT(st.id) as ticket_count FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id LEFT JOIN support_tickets st ON c.id = st.customer_id GROUP BY c.id HAVING COUNT(st.id) > 0",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 400,
+        "natural_language": "Marketing campaign ROI",
+        "expected_sql": "SELECT mc.name as campaign, mc.budget, COUNT(DISTINCT cl.lead_id) as leads_generated, COUNT(DISTINCT CASE WHEN cl.status = 'converted' THEN cl.lead_id END) as conversions FROM marketing_campaigns mc LEFT JOIN campaign_leads cl ON mc.id = cl.campaign_id GROUP BY mc.id, mc.name, mc.budget",
+        "category": "enterprise",
+        "module": "cross_module"
+    },
+    {
+        "id": 401,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 402,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 403,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 404,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 405,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 406,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 407,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 408,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 409,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 410,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 411,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 412,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 413,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 414,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 415,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 416,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 417,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 418,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 419,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 420,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 421,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 422,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 423,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 424,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 425,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 426,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 427,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 428,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 429,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 430,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 431,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 432,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 433,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 434,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 435,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 436,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 437,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 438,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 439,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 440,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 441,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 442,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 443,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 444,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 445,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 446,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 447,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 448,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 449,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 450,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 451,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 452,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 453,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 454,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 455,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 456,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 457,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 458,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 459,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 460,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 461,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 462,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 463,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 464,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 465,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 466,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 467,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 468,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 469,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 470,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 471,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 472,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 473,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 474,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 475,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 476,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 477,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 478,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 479,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 480,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 481,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 482,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 483,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 484,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 485,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 486,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 487,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 488,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 489,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 490,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 491,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 492,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 493,
+        "natural_language": "Products with negative price",
+        "expected_sql": "SELECT * FROM products WHERE list_price < 0",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 494,
+        "natural_language": "Orders from the future",
+        "expected_sql": "SELECT * FROM sales_orders WHERE order_date > CURRENT_DATE",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 495,
+        "natural_language": "Employees with no manager",
+        "expected_sql": "SELECT * FROM employees WHERE manager_id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 496,
+        "natural_language": "Customers with no orders",
+        "expected_sql": "SELECT c.* FROM customers c LEFT JOIN sales_orders so ON c.id = so.customer_id WHERE so.id IS NULL",
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 497,
+        "natural_language": "Show me sales",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 498,
+        "natural_language": "Revenue last year",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 499,
+        "natural_language": "Best performing employee",
+        "expected_sql": null,
+        "category": "edge_case",
+        "module": "general"
+    },
+    {
+        "id": 500,
+        "natural_language": "Customers created in 2025",
+        "expected_sql": "SELECT * FROM customers WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'",
+        "category": "edge_case",
+        "module": "general"
+    }
+]
