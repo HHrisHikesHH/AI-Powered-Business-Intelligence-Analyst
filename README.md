@@ -2,9 +2,13 @@
 
 An intelligent multi-agent system that enables non-technical users to query databases using natural language, receiving actionable insights, visualizations, and recommendations.
 
-## Core Infrastructure
+## Overview
 
-This implementation provides the complete backend infrastructure setup as specified in the technical specification document.
+This implementation provides an enterprise-grade, production-oriented backend that follows the technical specification:
+- Multi-agent NL→SQL pipeline with safety and self-correction
+- Enterprise relational schema (40+ tables) with pgvector embeddings
+- Redis-backed caching and Celery workers
+- Comprehensive testing, benchmarking, and monitoring
 
 ## Architecture Overview
 
@@ -391,7 +395,8 @@ make test
 - **API Docs**: http://localhost:8001/docs
 - **PostgreSQL**: localhost:5432
 - **Redis**: localhost:6379
-- **ChromaDB**: http://localhost:8000
+- **Prometheus**: http://localhost:9090
+- **Grafana**: http://localhost:3001
 
 ### Database Access
 
@@ -468,12 +473,14 @@ To remove PyTorch entirely and use API-based embeddings:
 - **Groq API**: Fast LLM inference (Llama 3)
 - **Docker**: Containerization (optional)
 
-## Next Steps (Future Phases)
+## Next Steps / Roadmap
 
-- **Phase 1, Week 2**: Basic NL-to-SQL pipeline with improved accuracy
-- **Phase 2**: Multi-agent system with specialized agents
-- **Phase 3**: Production features (optimization, caching, frontend)
-- **Phase 4**: Admin dashboard and monitoring
+Future work can focus on:
+
+- **Benchmark expansion & tuning**: Grow the benchmark set toward 500+ queries, refine scoring, and capture per‑category analytics over time.
+- **Advanced security & governance**: Fine‑grained RBAC, row/column‑level security, and stronger auditing around sensitive queries.
+- **Autoscaling & resilience**: Horizontal scaling for the backend and workers, plus more robust circuit‑breaking and backoff strategies.
+- **Frontend enhancements**: Richer query builder, saved dashboards, and admin controls for cost/performance tuning.
 
 ## Troubleshooting
 
@@ -486,9 +493,10 @@ To remove PyTorch entirely and use API-based embeddings:
 - Ensure PostgreSQL container is healthy: `docker-compose ps`
 - Wait a few seconds after `make up` before running migrations
 
-### ChromaDB connection issues
-- ChromaDB may take 30-60 seconds to fully start
-- Check health: `curl http://localhost:8000/api/v1/heartbeat`
+### Prometheus / Grafana issues
+- Ensure both services are running: `docker-compose ps prometheus grafana`
+- Prometheus UI: `http://localhost:9090` (check backend scrape status)
+- Grafana UI: `http://localhost:3001` (default login admin/admin; change in production)
 
 ### LLM API errors
 - Verify GROQ_API_KEY is set in `backend/.env`
