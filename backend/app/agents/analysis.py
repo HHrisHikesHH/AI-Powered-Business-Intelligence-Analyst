@@ -151,13 +151,14 @@ class AnalysisAgent:
         aggregations = query_understanding.get("aggregations", [])
         has_group_by = len(query_understanding.get("group_by", [])) > 0
         
+        execution_time_str = f"{execution_time_ms:.2f}ms" if execution_time_ms is not None else "N/A"
         prompt = f"""Analyze the following query results and generate insights.
 
 Original Query: {natural_language_query}
 Query Intent: {intent}
 SQL Query: {sql}
 Result Count: {result_count}
-Execution Time: {execution_time_ms:.2f}ms (if available)
+Execution Time: {execution_time_str}
 
 Data Summary:
 {data_summary}
