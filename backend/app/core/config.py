@@ -10,6 +10,14 @@ import os
 # Load .env file explicitly using python-dotenv
 # This ensures .env is loaded regardless of where the code runs from
 from dotenv import load_dotenv
+from enum import Enum
+
+class DatabaseType(str, Enum):
+    POSTGRESQL = "postgresql"
+    MYSQL = "mysql"
+    SQLITE = "sqlite"
+    MSSQL = "mssql"
+    ORACLE = "oracle"
 
 # Find .env file - check multiple possible locations
 env_paths = [
@@ -54,12 +62,29 @@ except ImportError:
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
     
-    # Database settings
+    # Database settings - Support multiple database types
+    DATABASE_TYPE: DatabaseType = DatabaseType.POSTGRESQL  # Options: postgresql, mysql, sqlite, mssql, oracle
+    DATABASE_URL: Optional[str] = None  # Override connection string if provided
+    
+    # PostgreSQL settings (default)
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "ai_bi_db"
+    
+    # MySQL settings
+    MYSQL_HOST: str = "localhost"
+    MYSQL_PORT: int = 3306
+    MYSQL_USER: str = "root"
+    MYSQL_PASSWORD: str = ""
+    MYSQL_DB: str = "ai_bi_db"
+    
+    # SQLite settings
+    SQLITE_PATH: str = "ai_bi.db"
+    
+    # Database schema (for multi-schema databases)
+    DATABASE_SCHEMA: str = "public"  # public for PostgreSQL, database name for MySQL
     
     # Redis settings
     REDIS_HOST: str = "localhost"
@@ -89,11 +114,26 @@ class Settings(BaseSettings):
     
     @property
     def database_url(self) -> str:
-        """Construct PostgreSQL connection URL."""
-        return (
-            f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
-            f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
-        )
+        """Construct database connection URL based on DATABASE_TYPE."""
+        if self.DATABASE_URL:
+            return self.DATABASE_URL
+        
+        db_type = self.DATABASE_TYPE.lower()
+        
+        if db_type in ["postgresql", "postgres"]:
+            return (
+                f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+                f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+            )
+        elif db_type in ["mysql", "mariadb"]:
+            return (
+                f"mysql+aiomysql://{self.MYSQL_USER}:{self.MYSQL_PASSWORD}"
+                f"@{self.MYSQL_HOST}:{self.MYSQL_PORT}/{self.MYSQL_DB}"
+            )
+        elif db_type == "sqlite":
+            return f"sqlite+aiosqlite:///{self.SQLITE_PATH}"
+        else:
+            raise ValueError(f"Unsupported database type: {db_type}")
     
     @property
     def redis_url(self) -> str:

@@ -13,9 +13,11 @@ import json
 class SchemaIntrospector:
     """Service for introspecting database schema and generating embeddings."""
     
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession, schema: str = None):
         self.db = db
         self.vector_store = vector_store
+        from app.core.config import settings
+        self.schema = schema or settings.DATABASE_SCHEMA
     
     async def introspect_and_embed(self) -> Dict[str, int]:
         """
@@ -65,69 +67,21 @@ class SchemaIntrospector:
     
     async def _get_tables(self) -> List[str]:
         """Get list of all tables in the database."""
-        result = await self.db.execute(text("""
-            SELECT table_name
-            FROM information_schema.tables
-            WHERE table_schema = 'public'
-            AND table_type = 'BASE TABLE'
-            ORDER BY table_name
-        """))
-        
-        rows = result.fetchall()
-        return [row[0] for row in rows]
+        from app.core.database import get_db_adapter
+        adapter = get_db_adapter()
+        return await adapter.get_tables(self.db, schema=self.schema)
     
     async def _get_columns(self, table_name: str) -> List[Dict]:
         """Get columns for a table."""
-        result = await self.db.execute(text("""
-            SELECT 
-                column_name,
-                data_type,
-                is_nullable,
-                column_default
-            FROM information_schema.columns
-            WHERE table_schema = 'public'
-            AND table_name = :table_name
-            ORDER BY ordinal_position
-        """), {"table_name": table_name})
-        
-        rows = result.fetchall()
-        return [
-            {
-                "name": row[0],
-                "data_type": row[1],
-                "is_nullable": row[2],
-                "default": row[3]
-            }
-            for row in rows
-        ]
+        from app.core.database import get_db_adapter
+        adapter = get_db_adapter()
+        return await adapter.get_columns(self.db, table_name, schema=self.schema)
     
     async def _get_relationships(self) -> List[Dict]:
         """Get foreign key relationships."""
-        result = await self.db.execute(text("""
-            SELECT
-                tc.table_name,
-                kcu.column_name,
-                ccu.table_name AS foreign_table_name,
-                ccu.column_name AS foreign_column_name
-            FROM information_schema.table_constraints AS tc
-            JOIN information_schema.key_column_usage AS kcu
-                ON tc.constraint_name = kcu.constraint_name
-            JOIN information_schema.constraint_column_usage AS ccu
-                ON ccu.constraint_name = tc.constraint_name
-            WHERE tc.constraint_type = 'FOREIGN KEY'
-            AND tc.table_schema = 'public'
-        """))
-        
-        rows = result.fetchall()
-        return [
-            {
-                "table": row[0],
-                "column": row[1],
-                "foreign_table": row[2],
-                "foreign_column": row[3]
-            }
-            for row in rows
-        ]
+        from app.core.database import get_db_adapter
+        adapter = get_db_adapter()
+        return await adapter.get_relationships(self.db, schema=self.schema)
     
     async def _embed_table(self, table_name: str):
         """Generate embedding for a table."""
