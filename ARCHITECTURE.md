@@ -72,92 +72,86 @@ Admin --> (Admin Dashboard)
 
 ```
 .
-├── docker-compose.yml          # Service orchestration
-├── Makefile                    # Development commands
-├── README.md                   # Main documentation
-├── QUICKSTART.md               # Quick start guide
-├── ARCHITECTURE.md             # This file
+├── docker-compose.yml           # Backend, Redis, Celery worker, Prometheus, Grafana
+├── Makefile                     # Development commands
+├── README.md                    # Main documentation
+├── ARCHITECTURE.md              # This file
+├── START_SERVICES.md            # Local backend + services guide
 └── backend/
-    ├── Dockerfile              # Backend container definition
-    ├── requirements.txt        # Python dependencies
-    ├── .env.example           # Environment template
-    ├── test_setup.py          # Setup verification script
+    ├── Dockerfile               # Backend container definition
+    ├── requirements.txt         # Python dependencies
     ├── app/
-    │   ├── main.py            # FastAPI application
-    │   ├── celery_app.py      # Celery configuration
-    │   ├── core/              # Core services
-    │   ├── api/               # API routes
-    │   ├── services/          # Business logic
-    │   └── tasks/             # Celery tasks
-    └── database/
-        ├── init.sql           # Schema definition
-        └── seed_data.sql      # Sample data
+    │   ├── main.py              # FastAPI application entrypoint
+    │   ├── celery_app.py        # Celery configuration
+    │   ├── agents/              # Multi-agent NL→SQL pipeline
+    │   ├── core/                # Core services (config, DB, Redis, pgvector, LLM)
+    │   ├── services/            # Hybrid RAG, query execution, metrics, error handling
+    │   ├── api/                 # Versioned API routes
+    │   └── tasks/               # Celery tasks
+    ├── database/
+    │   ├── enterprise_schema.sql      # 40+ table enterprise schema
+    │   ├── enterprise_seed_data*.sql  # Comprehensive seed data
+    │   ├── init.sql                   # Legacy minimal schema (for reference)
+    │   └── README.md                  # Schema documentation and quick start
+    ├── tests/                   # Unit, integration, performance, security, benchmark tests
+    └── scripts/                 # DB and helper scripts (e.g., setup_database.py)
 ```
 
 ## Key Components
 
 ### 1. Docker Compose (`docker-compose.yml`)
 
-Orchestrates all services:
-- **PostgreSQL**: Database with persistent volume
-- **Redis**: Cache and Celery broker
-- **ChromaDB**: Vector store for embeddings
-- **FastAPI Backend**: Main application server (exposes `/api/v1` and `/metrics`)
-- **Celery Worker**: Async task processor
-- **Prometheus**: Scrapes `/metrics` for observability
-- **Grafana**: Visualises metrics and dashboards
+Orchestrates the core runtime services:
 
-**Key Features:**
-- Health checks for all services
-- Proper dependency ordering
-- Volume persistence
-- Network isolation
+- **Backend (FastAPI + agents)** – serves the public query API, admin endpoints, and `/metrics`.
+- **Redis** – shared cache and Celery broker.
+- **Celery worker** – executes background jobs (e.g., schema embedding).
+- **Prometheus** – scrapes the backend’s `/metrics` endpoint.
+- **Grafana** – visualises metrics dashboards.
+
+> **Note:** PostgreSQL is expected to run outside this compose file (e.g., local Postgres or a managed DB). The backend connects using `DATABASE_URL` or `POSTGRES_*` settings.
+
+Key features:
+- Health checks and dependency ordering.
+- Isolation via a dedicated Docker network.
 
 ### 2. FastAPI Application (`backend/app/main.py`)
 
-Main entry point that:
-- Initializes all services on startup
-- Sets up CORS middleware
-- Registers API routes
-- Provides health check endpoints
-
-**Startup Sequence:**
-1. Initialize PostgreSQL connection
-2. Initialize Redis connection
-3. Initialize ChromaDB connection
-4. Verify all services are healthy
+The main process:
+- Loads configuration (`config.py`) and logging.
+- Initializes:
+  - Database adapter and async session factory (`database_adapter.py`, `database.py`).
+  - Redis client (`redis_client.py`).
+  - LLM client (`llm_client.py`).
+  - Schema introspection & pgvector embeddings (`schema_introspection.py`, `pgvector_client.py`).
+- Registers:
+  - Public query routes under `/api/v1/queries`.
+  - Admin/metrics routes under `/api/v1/admin`.
+  - Health and readiness endpoints.
 
 ### 3. Core Services (`backend/app/core/`)
 
 #### `config.py`
-- Pydantic-based configuration management
-- Loads environment variables
-- Provides typed settings with validation
-- Constructs connection URLs
+- Pydantic-based configuration management.
+- Loads environment variables from `.env` and environment.
+- Provides typed settings (DB, Redis, LLM models, environment flags).
 
-#### `database.py`
-- SQLAlchemy async engine setup
-- Connection pooling (10 connections, 20 overflow)
-- Async session management
-- Database initialization
+#### `database_adapter.py` & `database.py`
+- Multi-DB abstraction for PostgreSQL, MySQL, and SQLite.
+- Builds async SQLAlchemy engines and session factories.
+- Exposes FastAPI-friendly dependencies (`get_db_adapter`, `get_db`).
 
 #### `redis_client.py`
-- Async Redis client
-- Caching service with TTL support
-- JSON serialization for complex objects
-- Connection lifecycle management
+- Async Redis client.
+- Simple caching API with TTL support and JSON serialisation.
 
-#### `chromadb_client.py`
-- ChromaDB HTTP client
-- Sentence transformer integration (all-MiniLM-L6-v2)
-- Vector store operations
-- Embedding generation and similarity search
+#### `pgvector_client.py`
+- Manages embeddings stored in PostgreSQL with the `pgvector` extension.
+- Used by schema introspection and hybrid RAG to retrieve relevant tables/columns/relationships.
 
 #### `llm_client.py`
-- Groq API client for Llama 3
-- Text completion generation
-- Structured JSON output support
-- Error handling and retry logic
+- Groq API client for Llama 3 / GPT‑OSS families.
+- Centralises model selection, timeouts, and retry logic.
 
 ### 4. API Layer (`backend/app/api/v1/`)
 
@@ -173,90 +167,90 @@ Main entry point that:
 - Caching integration
 - Error handling
 
-### 5. Business Logic (`backend/app/services/`)
+### 5. Agents & Business Logic (`backend/app/agents/` & `backend/app/services/`)
 
-#### `query_executor.py`
-Simplified query execution for Week 1:
-1. **SQL Generation**: Uses LLM to convert natural language to SQL
-2. **SQL Validation**: Ensures only SELECT queries
-3. **Execution**: Runs SQL against PostgreSQL
-4. **Result Formatting**: Converts rows to JSON
+#### Orchestrator (`agents/orchestrator.py`)
+- LangGraph-based state machine that wires:
+  - `QueryUnderstandingAgent`
+  - `SQLGenerationAgent`
+  - `SQLValidator`
+  - `AnalysisAgent`
+  - `VisualizationAgent`
+  - `QueryExecutor`, `ErrorHandler`, and `Metrics` services.
+- Implements retries, self-correction, and “simple vs complex” branching to skip heavy analysis where appropriate.
 
-**Future Enhancements (later phases):**
-- Multi-agent pipeline
-- Schema-aware SQL generation
-- Query optimization
-- Result analysis
+#### Query Understanding (`agents/query_understanding.py`)
+- Normalises natural language queries into a rich, typed structure.
+- Enforces “no default table” policy to avoid hallucinated joins.
+
+#### SQL Generation (`agents/sql_generation.py` + `services/hybrid_rag.py` + `services/schema_introspection.py`)
+- Grounds query understanding against the live enterprise schema.
+- Uses hybrid RAG over pgvector to retrieve relevant tables/columns/relationships and examples.
+- Generates **schema-respecting** SQL with explicit constraints against non-existent tables/columns.
+
+#### SQL Validation (`agents/sql_validator.py`)
+- Ensures only safe SQL reaches the database.
+- Uses `sqlparse` and schema cache to reject dangerous or malformed queries.
+
+#### Execution (`services/query_executor.py`)
+- Runs SQL with timeouts and automatic row limits.
+- Normalises results to JSON-friendly types.
+
+#### Analysis & Visualisation (`agents/analysis.py`, `agents/visualization.py`)
+- AnalysisAgent: produces business-ready insights/trends/anomalies/recommendations.
+- VisualizationAgent: selects chart types and constructs Recharts configuration for the frontend.
 
 ### 6. Celery Tasks (`backend/app/tasks/`)
 
 #### `embedding_tasks.py`
-Async tasks for:
-- Schema embedding generation
-- Query history storage
-- Batch processing
-
-**Usage:**
-```python
-from app.tasks.embedding_tasks import generate_schema_embeddings_task
-generate_schema_embeddings_task.delay(schema_elements)
-```
+- Background jobs for:
+  - Generating and refreshing schema embeddings.
+  - Potentially precomputing heavy analytics or materialised views.
 
 ### 7. Database (`backend/database/`)
 
-#### `init.sql`
-Creates e-commerce schema:
-- `customers`: Customer information
-- `products`: Product catalog
-- `orders`: Order records
-- `order_items`: Order line items
-- Indexes for performance
-
-#### `seed_data.sql`
-Populates database with:
-- 20 customers across various cities
-- 20 products in 4 categories (Electronics, Clothing, Home & Kitchen, Books)
-- 26 orders with different statuses
-- Associated order items with proper relationships
+- **`enterprise_schema.sql`** – 40+ table enterprise schema (HR, Finance, Sales/CRM, Inventory, Projects, Support, Marketing).
+- **`enterprise_seed_data*.sql`** – Rich, cross-linked seed data for realistic testing.
+- **`init.sql` / `seed_data.sql`** – Legacy minimal schema and seed data (kept for reference and simple demos).
 
 ## Data Flow
 
-### Query Processing Flow (Week 1)
+### End-to-End NL→SQL→Insights
 
 ```
 1. User submits natural language query
    ↓
-2. FastAPI endpoint receives request
+2. FastAPI Query API receives request and initialises AgentState
    ↓
-3. Check Redis cache (if exists, return cached result)
+3. Orchestrator runs "understand" node
+   - QueryUnderstandingAgent produces structured understanding (intent, tables, filters, etc.)
+   - May serve from Redis cache for repeated queries
    ↓
-4. QueryExecutor service:
-   a. Generate SQL using LLM (Groq/Llama 3)
-   b. Validate SQL (SELECT only, safety checks)
-   c. Execute against PostgreSQL
-   d. Format results
+4. Orchestrator runs "generate" node
+   - SQLGenerationAgent:
+     • Retrieves schema & embedding context (Hybrid RAG over pgvector)
+     • Generates candidate SQL constrained to known tables/columns
    ↓
-5. Cache results in Redis (1 hour TTL)
+5. Orchestrator runs "validate" node
+   - SQLValidator:
+     • Enforces SELECT-only
+     • Blocks dangerous operations
+     • Checks schema consistency
+   - On failure, orchestrator may retry or trigger self-correction
    ↓
-6. Return response to user
-```
-
-### Future Multi-Agent Flow (Later Phases)
-
-```
-1. Query Understanding Agent → Extract intent, tables, filters
+6. Orchestrator runs "execute" node
+   - QueryExecutor executes SQL with timeout and row limit
+   - Results are normalised and may be cached in Redis
    ↓
-2. SQL Generation Agent → Generate SQL with RAG context
+7. Orchestrator decides analysis path
+   - Simple queries may skip analysis/visualisation
+   - Complex/aggregated queries proceed to "analyze_and_visualize"
    ↓
-3. SQL Validator → Syntax, permissions, safety checks
+8. Orchestrator runs "analyze_and_visualize"
+   - AnalysisAgent: insights, trends, anomalies, recommendations, summary
+   - VisualizationAgent: selects chart type and builds config
    ↓
-4. Query Executor → Run SQL
-   ↓
-5. Analysis Agent → Generate insights
-   ↓
-6. Visualization Agent → Create chart configs
-   ↓
-7. Return comprehensive response
+9. Response returned to client
 ```
 
 ## Technology Choices
@@ -275,21 +269,18 @@ Populates database with:
 
 ### Why Redis?
 - Fast in-memory caching
-- Celery message broker
-- Simple key-value operations
-- Persistence support
+- Shared infrastructure for request-level caching and background jobs
+- Simple, battle-tested operational model
 
-### Why ChromaDB?
-- Open-source vector database
-- Easy integration
-- Good performance for RAG
-- HTTP API for containerization
+### Why pgvector (in PostgreSQL)?
+- Keeps vector search close to the relational data.
+- Avoids an additional vector database dependency.
+- Works well for schema embeddings and semantic schema search.
 
-### Why Groq (Llama 3)?
-- Free/open-source LLM access
-- Fast inference (optimized hardware)
-- Good SQL generation capabilities
-- Cost-effective for development
+### Why Groq (Llama 3 / GPT‑OSS)?
+- High-performance hosted LLMs with strong SQL reasoning.
+- Multiple model sizes for cost-aware routing.
+- Straightforward HTTP API integrated through `llm_client.py`.
 
 ### Why Celery?
 - Distributed task processing
@@ -301,95 +292,94 @@ Populates database with:
 
 ### Environment Variables
 
-All configuration is managed through `backend/.env`:
+All configuration is managed through `backend/.env` and loaded by `config.py`. Key settings:
 
 ```bash
-# Database
-POSTGRES_HOST=postgres
+# Database (PostgreSQL by default)
+DATABASE_TYPE=postgresql
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
 POSTGRES_USER=ai_bi_user
-POSTGRES_PASSWORD=ai_bi_password
+POSTGRES_PASSWORD=your_password
 POSTGRES_DB=ai_bi_db
+# Or override with a single DATABASE_URL:
+# DATABASE_URL=postgresql+asyncpg://user:pass@host:port/dbname
 
 # Redis
-REDIS_HOST=redis
+REDIS_HOST=localhost
 REDIS_PORT=6379
 
-# ChromaDB
-CHROMADB_HOST=chromadb
-CHROMADB_PORT=8000
-
-# LLM
-GROQ_API_KEY=your_key_here
+# LLM (Groq)
+GROQ_API_KEY=your_groq_api_key_here
+LLM_MODEL_SIMPLE=llama-3.1-8b-instant
+LLM_MODEL_MEDIUM=llama-3.3-70b-versatile
+LLM_MODEL_COMPLEX=openai/gpt-oss-120b
 
 # Application
 ENVIRONMENT=development
 BACKEND_PORT=8001
+LOG_LEVEL=INFO
 ```
 
 ## Security Considerations
 
-### Current Implementation (Week 1)
-- SQL injection prevention: Only SELECT queries allowed
-- Row limits: Automatic LIMIT 10000
-- Read-only operations: No INSERT/UPDATE/DELETE
-- Environment variable secrets: API keys in .env
+### Current Protections
+- SQL safety: `SQLValidator` enforces SELECT-only semantics and blocks dangerous operations.
+- Row limits and timeouts: `QueryExecutor` enforces sensible limits and async timeouts.
+- Least-privilege DB accounts: intended to be read-only or minimally privileged.
+- Secrets management: API keys and credentials injected via environment variables.
 
 ### Future Enhancements
-- User authentication and authorization
-- Query permission checks
-- Rate limiting
-- Input sanitization
-- Audit logging
+- Per-tenant and per-role query policies.
+- Deeper auditing and data access logging.
+- Rate limiting and anomaly detection on query patterns.
 
 ## Performance Optimizations
 
-### Current (Week 1)
-- Connection pooling (PostgreSQL)
-- Redis caching (1 hour TTL)
-- Async operations throughout
-- Docker containerization
+### Current
+- Connection pooling and async I/O throughout the stack.
+- Redis caching for hot query understandings and results.
+- Schema embeddings stored and indexed via pgvector.
+- Containerised services with clear separation of concerns.
 
 ### Future
-- Intelligent model routing (cost optimization)
-- Query result pagination
-- Schema embedding caching
-- Batch processing for embeddings
+- More advanced cost- and latency-aware model routing.
+- Pagination and streaming for large result sets.
+- Incremental and batched embedding refresh cycles.
 
 ## Monitoring & Observability
 
 ### Current
-- Loguru for structured logging
-- Health check endpoints
-- Error tracking in logs
+- Structured logging via Loguru.
+- Health and readiness endpoints (used by Docker and load balancers).
+- Prometheus `/metrics` endpoint for backend metrics.
 
 ### Future
-- LangSmith integration for agent tracing
-- Prometheus metrics
-- Cost tracking per query
-- Performance dashboards
+- Distributed tracing for agent steps (e.g., LangGraph/OpenTelemetry).
+- Cost tracking and SLO-based alerting.
+- Richer Grafana dashboards for latency, errors, and LLM usage.
 
 ## Testing
 
-### Setup Verification
+### Running Tests
+
 ```bash
-docker-compose exec backend python test_setup.py
+cd backend
+source venv/bin/activate
+pytest -v
 ```
 
-Tests:
-- Database connectivity
-- Redis caching
-- ChromaDB embeddings
-- LLM API access
+Examples:
 
-### Manual Testing
 ```bash
-# Health check
-curl http://localhost:8001/health
+# Health and smoke tests
+pytest tests/test_error_handling.py -v
 
-# Query test
-curl -X POST http://localhost:8001/api/v1/queries/ \
-  -H "Content-Type: application/json" \
-  -d '{"query": "How many customers?"}'
+# Orchestrator + multi-agent flow
+pytest tests/test_orchestrator.py -v
+
+# Enterprise schema end-to-end queries
+pytest tests/test_enterprise_schema.py -v
 ```
 
 ## Development Workflow
@@ -400,30 +390,14 @@ curl -X POST http://localhost:8001/api/v1/queries/ \
 4. **Test changes**: Use API docs at http://localhost:8001/docs
 5. **Reset database**: `make db-reset` (if needed)
 
-## Next Steps (Future Phases)
+## Next Steps / Roadmap
 
-### Phase 1, Week 2
-- Improved SQL generation accuracy
-- Schema-aware query generation
-- Better error handling
+At this stage the core backend, multi-agent pipeline, enterprise schema, caching, and observability are in place. Future work can focus on:
 
-### Phase 2
-- Multi-agent system implementation
-- Query Understanding Agent
-- Analysis Agent
-- Visualization Agent
-
-### Phase 3
-- Frontend interface
-- Advanced caching
-- Cost optimization
-- Performance tuning
-
-### Phase 4
-- Admin dashboard
-- Monitoring and analytics
-- Documentation
-- Production deployment
+- **Benchmark & evaluation**: Expand the benchmark dataset, automate result analysis, and wire metrics into Grafana.
+- **Security & governance**: Role-based access, row/column-level security, and richer auditing.
+- **Scalability**: Horizontal scaling for backend and workers, plus resilient LLM and DB failover patterns.
+- **UX & tooling**: Enhance the React frontend (query builder, saved views, admin console) and add admin tools for cost/performance tuning.
 
 ## Troubleshooting
 
@@ -444,16 +418,15 @@ curl -X POST http://localhost:8001/api/v1/queries/ \
    - Check API key validity
    - Monitor rate limits
 
-4. **ChromaDB connection issues**
-   - Wait 30-60 seconds for startup
-   - Check health endpoint
-   - Verify network configuration
+4. **Prometheus / Grafana issues**
+   - Ensure both containers are running
+   - Check `http://localhost:9090` (Prometheus) and `http://localhost:3001` (Grafana)
+   - Verify backend `/metrics` is reachable from Prometheus
 
 ## Resources
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [Groq API Documentation](https://console.groq.com/docs)
-- [ChromaDB Documentation](https://docs.trychroma.com/)
 - [Celery Documentation](https://docs.celeryq.dev/)
 - [SQLAlchemy Async](https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html)
-
+- [pgvector Extension](https://github.com/pgvector/pgvector)
